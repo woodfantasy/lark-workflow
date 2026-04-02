@@ -13,6 +13,11 @@ While [lark-cli](https://github.com/larksuite/cli) provides 18 atomic skills for
 | [`lark-workflow-daily-briefing`](./skills/lark-workflow-daily-briefing/SKILL.md) | Daily panoramic briefing — aggregates calendar, tasks, mail, approvals, and messages into a single morning report | Calendar, Task, Mail, Approval, IM |
 | [`lark-workflow-weekly-report`](./skills/lark-workflow-weekly-report/SKILL.md) | Automated weekly report — collects completed tasks, meetings, and document activity to generate a structured weekly summary | Calendar, Task, Drive, VC, Docs |
 | [`lark-workflow-action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | Meeting-to-task closed loop — extracts action items from meeting notes and auto-creates tasks with assignee notifications | VC, Minutes, Docs, Contact, Task, IM |
+| [`lark-workflow-doc-summarizer`](./skills/lark-workflow-doc-summarizer/SKILL.md) | Document summarizer — reads Lark Docs or Wiki pages and generates structured summaries with key points and decisions | Docs, Wiki, Drive |
+| [`lark-workflow-knowledge-qa`](./skills/lark-workflow-knowledge-qa/SKILL.md) | Knowledge base Q&A — RAG-style question answering over Lark Wiki with source citations | Wiki, Docs, Drive |
+| [`lark-workflow-task-prioritizer`](./skills/lark-workflow-task-prioritizer/SKILL.md) | Task prioritizer — Eisenhower matrix analysis with time-block suggestions based on calendar constraints | Task, Calendar |
+| [`lark-workflow-smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | Smart scheduler — finds common free time slots across attendees and creates calendar events | Calendar, Contact |
+| [`lark-workflow-approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | Approval accelerator — tracks approval status, detects timeouts, and sends nudge messages | Approval, IM, Contact |
 
 ## Installation
 
