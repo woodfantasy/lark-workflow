@@ -1,10 +1,13 @@
 ---
 name: lark-workflow-approval-accelerator
 version: 1.0.0
-description: "审批加速器：查看我的待处理审批和已发起审批的状态，对超时未审批的实例自动发送催办消息。当用户需要催审批、查看审批进度、或问"我的审批到哪了"时使用。"
+description: >
+  审批加速器：查看我的待处理审批和已发起审批的状态，对超时未审批的实例自动发送催办消息。
+  当用户需要催审批、查看审批进度、或问「我的审批到哪了」时使用。
 metadata:
   requires:
-    bins: ["lark-cli"]
+    bins:
+      - lark-cli
 ---
 
 # 审批加速器工作流

@@ -1,10 +1,13 @@
 ---
 name: lark-workflow-knowledge-qa
 version: 1.0.0
-description: "知识库问答：在飞书知识库中搜索相关文档，读取内容后进行 RAG 式问答，返回精准回答并附上来源引用链接。当用户需要查阅公司文档、询问政策/流程/规范、或问"知识库里关于 XX 怎么说的"时使用。"
+description: >
+  知识库问答：在飞书知识库中搜索相关文档，读取内容后进行 RAG 式问答，返回精准回答并附上来源引用链接。
+  当用户需要查阅公司文档、询问政策/流程/规范、或问「知识库里关于 XX 怎么说的」时使用。
 metadata:
   requires:
-    bins: ["lark-cli"]
+    bins:
+      - lark-cli
 ---
 
 # 知识库问答工作流
