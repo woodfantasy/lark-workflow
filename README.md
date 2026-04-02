@@ -18,6 +18,13 @@ While [lark-cli](https://github.com/larksuite/cli) provides 18 atomic skills for
 | [`lark-workflow-task-prioritizer`](./skills/lark-workflow-task-prioritizer/SKILL.md) | Task prioritizer — Eisenhower matrix analysis with time-block suggestions based on calendar constraints | Task, Calendar |
 | [`lark-workflow-smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | Smart scheduler — finds common free time slots across attendees and creates calendar events | Calendar, Contact |
 | [`lark-workflow-approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | Approval accelerator — tracks approval status, detects timeouts, and sends nudge messages | Approval, IM, Contact |
+| [`lark-workflow-base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | Bitable analytics — trend analysis, anomaly detection, and distribution insights for multidimensional tables | Base |
+| [`lark-workflow-onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | New hire onboarding — auto-joins chats, creates task checklists, sends wiki docs, and schedules training | Contact, IM, Task, Wiki, Calendar |
+| [`lark-workflow-doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | Document template engine — fills Docs templates with Base/Sheets data for batch document generation | Docs, Base, Sheets |
+| [`lark-workflow-meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | Meeting efficiency analysis — measures meeting time cost, note coverage, and schedule patterns | VC, Calendar, Minutes |
+| [`lark-workflow-workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | Team workload balancer — visualizes team member load and suggests optimal task assignments | Task, Calendar, Contact |
+| [`lark-workflow-wiki-auditor`](./skills/lark-workflow-wiki-auditor/SKILL.md) | Wiki health auditor — detects outdated docs, structural issues, and generates health scores | Wiki, Drive |
+| [`lark-workflow-calendar-optimizer`](./skills/lark-workflow-calendar-optimizer/SKILL.md) | Calendar optimizer — diagnoses conflicts, fragmentation, and suggests schedule improvements | Calendar |
 
 ## Installation
 

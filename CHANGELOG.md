@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.0] - 2026-04-03
+
+### Added
+- `lark-workflow-base-analytics` — Bitable intelligent analysis with trend detection and anomaly alerts
+- `lark-workflow-onboarding` — New hire onboarding automation across 5 domains
+- `lark-workflow-doc-template-engine` — Data-driven document generation from Base/Sheets templates
+- `lark-workflow-meeting-efficiency` — Meeting meta-analysis with time cost and quality metrics
+- `lark-workflow-workload-balancer` — Team workload heatmap and task assignment suggestions
+- `lark-workflow-wiki-auditor` — Knowledge base health scoring and outdated doc detection
+- `lark-workflow-calendar-optimizer` — Schedule conflict diagnosis and optimization plans
+
 ## [0.2.0] - 2026-04-03
 
 ### Added

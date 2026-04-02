@@ -18,6 +18,13 @@
 | [`lark-workflow-task-prioritizer`](./skills/lark-workflow-task-prioritizer/SKILL.md) | 智能任务排序 — 基于紧急/重要矩阵分析，结合日程约束生成时间块建议 | 任务、日历 |
 | [`lark-workflow-smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | 智能排会 — 查询多人忙闲状态，找出共同空闲时段并一键创建日程 | 日历、通讯录 |
 | [`lark-workflow-approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | 审批加速器 — 追踪审批进度，检测超时实例，发送催办消息 | 审批、即时通讯、通讯录 |
+| [`lark-workflow-base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | 多维表格智能分析 — 趋势分析、异常检测、数据分布洞察 | 多维表格 |
+| [`lark-workflow-onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | 新人入职自动化 — 拉群、建任务清单、发知识库必读、排培训日程 | 通讯录、即时通讯、任务、知识库、日历 |
+| [`lark-workflow-doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | 文档模板引擎 — 从多维表格/电子表格读取数据，批量自动填充文档模板 | 云文档、多维表格、电子表格 |
+| [`lark-workflow-meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | 会议效率分析 — 统计会议时间成本、纪要覆盖率、日程节奏 | 视频会议、日历、妙记 |
+| [`lark-workflow-workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | 团队负载均衡器 — 可视化团队成员工作负载，建议最优任务分配 | 任务、日历、通讯录 |
+| [`lark-workflow-wiki-auditor`](./skills/lark-workflow-wiki-auditor/SKILL.md) | 知识库健康审计 — 检测过时文档、结构问题，生成健康度评分 | 知识库、云空间 |
+| [`lark-workflow-calendar-optimizer`](./skills/lark-workflow-calendar-optimizer/SKILL.md) | 日程优化助手 — 诊断日程冲突与碎片化，建议重排方案 | 日历 |
 
 ## 安装
 
