@@ -2,91 +2,161 @@
 
 # lark-workflow
 
-基于 [飞书 CLI](https://github.com/larksuite/cli) 的跨域工作流 Skills 集合 — 将多个业务域编排为强大的自动化工作流。
+> 15 个基于[飞书 CLI](https://github.com/larksuite/cli) 的跨域工作流 Skills — 将多个业务域编排为强大的自动化工作流。
 
 [飞书 CLI](https://github.com/larksuite/cli) 提供了 18 个原子 Skills 覆盖各个独立业务域（日历、消息、文档、任务等），**lark-workflow** 则将它们组合为多步骤、跨域的工作流，解决真实的效率场景。
 
-## Skills 一览
+## 快速开始
 
-| Skill | 说明 | 涉及业务域 |
-|-------|------|-----------|
-| [`lark-workflow-daily-briefing`](./skills/lark-workflow-daily-briefing/SKILL.md) | 每日全景简报 — 聚合日程、任务、邮件、审批、消息，一站式生成早间简报 | 日历、任务、邮箱、审批、即时通讯 |
-| [`lark-workflow-weekly-report`](./skills/lark-workflow-weekly-report/SKILL.md) | 周报自动生成 — 汇总已完成任务、会议纪要、文档活动，生成结构化周报 | 日历、任务、云空间、视频会议、云文档 |
-| [`lark-workflow-action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | 会议任务闭环 — 从会议纪要提取行动项，自动创建任务并通知责任人 | 视频会议、妙记、云文档、通讯录、任务、即时通讯 |
-| [`lark-workflow-doc-summarizer`](./skills/lark-workflow-doc-summarizer/SKILL.md) | 文档智能摘要 — 读取飞书文档或知识库文档，生成结构化摘要（要点、决策、待确认项） | 云文档、知识库、云空间 |
-| [`lark-workflow-knowledge-qa`](./skills/lark-workflow-knowledge-qa/SKILL.md) | 知识库问答 — 基于知识库的 RAG 式问答，返回精准回答并附上来源引用 | 知识库、云文档、云空间 |
-| [`lark-workflow-task-prioritizer`](./skills/lark-workflow-task-prioritizer/SKILL.md) | 智能任务排序 — 基于紧急/重要矩阵分析，结合日程约束生成时间块建议 | 任务、日历 |
-| [`lark-workflow-smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | 智能排会 — 查询多人忙闲状态，找出共同空闲时段并一键创建日程 | 日历、通讯录 |
-| [`lark-workflow-approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | 审批加速器 — 追踪审批进度，检测超时实例，发送催办消息 | 审批、即时通讯、通讯录 |
-| [`lark-workflow-base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | 多维表格智能分析 — 趋势分析、异常检测、数据分布洞察 | 多维表格 |
-| [`lark-workflow-onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | 新人入职自动化 — 拉群、建任务清单、发知识库必读、排培训日程 | 通讯录、即时通讯、任务、知识库、日历 |
-| [`lark-workflow-doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | 文档模板引擎 — 从多维表格/电子表格读取数据，批量自动填充文档模板 | 云文档、多维表格、电子表格 |
-| [`lark-workflow-meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | 会议效率分析 — 统计会议时间成本、纪要覆盖率、日程节奏 | 视频会议、日历、妙记 |
-| [`lark-workflow-workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | 团队负载均衡器 — 可视化团队成员工作负载，建议最优任务分配 | 任务、日历、通讯录 |
-| [`lark-workflow-wiki-auditor`](./skills/lark-workflow-wiki-auditor/SKILL.md) | 知识库健康审计 — 检测过时文档、结构问题，生成健康度评分 | 知识库、云空间 |
-| [`lark-workflow-calendar-optimizer`](./skills/lark-workflow-calendar-optimizer/SKILL.md) | 日程优化助手 — 诊断日程冲突与碎片化，建议重排方案 | 日历 |
-
-## 安装
-
-### 前置条件
-
-- 已安装并完成认证的 [飞书 CLI](https://github.com/larksuite/cli)
-- Node.js（npm/npx）
+### 1. 安装
 
 ```bash
 # 安装飞书 CLI（如未安装）
 npm install -g @larksuite/cli
 
-# 安装飞书 CLI 官方 Skills（必需）
+# 安装飞书 CLI 官方 Skills（必需依赖）
 npx skills add larksuite/cli -y -g
 
 # 安装 lark-workflow Skills
 npx skills add woodfantasy/lark-workflow -y -g
 ```
 
-### 认证授权
-
-每个 Skill 需要特定的业务域权限，使用前请先授权：
+### 2. 认证
 
 ```bash
-# daily-briefing（5 个域）
-lark-cli auth login --domain calendar,task,mail,approval,im
-
-# weekly-report
-lark-cli auth login --domain calendar,task,drive,vc,doc
-
-# action-extractor
-lark-cli auth login --domain vc,drive,contact,task,im
-
-# 或使用 --recommend 自动选择常用权限
+# 推荐：一次性授权所有常用域
 lark-cli auth login --recommend
 ```
 
+### 3. 使用
+
+用自然语言告诉 AI Agent 你的需求即可：
+
+```
+💬 "今天有什么安排"                → daily-briefing（每日简报）
+💬 "帮我写周报"                   → weekly-report（周报生成）
+💬 "把会议纪要变成任务"            → action-extractor（任务提取）
+💬 "帮我总结这个文档"              → doc-summarizer（文档摘要）
+💬 "知识库里关于 XX 怎么说的"       → knowledge-qa（知识问答）
+💬 "今天应该先做什么"              → task-prioritizer（任务排序）
+💬 "帮我约张三李四下周开会"         → smart-scheduler（智能排会）
+💬 "我的审批到哪了"                → approval-accelerator（审批催办）
+💬 "分析一下这个多维表格"           → base-analytics（数据分析）
+💬 "新同事小王入职了"              → onboarding（入职自动化）
+💬 "用模板批量生成文档"            → doc-template-engine（模板引擎）
+💬 "这周开了多少会"               → meeting-efficiency（会议效率）
+💬 "谁比较空可以接新任务"           → workload-balancer（负载均衡）
+💬 "知识库哪些文档过时了"           → wiki-auditor（知识审计）
+💬 "帮我优化明天的日程"            → calendar-optimizer（日程优化）
+```
+
+AI Agent 会自动读取对应的 SKILL.md，理解工作流，执行正确的 lark-cli 命令。
+
+## Skills 一览
+
+### 🔄 个人效率
+
+| Skill | 说明 | 涉及业务域 |
+|-------|------|-----------|
+| [`daily-briefing`](./skills/lark-workflow-daily-briefing/SKILL.md) | 每日全景简报 — 聚合 5 个域的信息 | 日历、任务、邮箱、审批、即时通讯 |
+| [`weekly-report`](./skills/lark-workflow-weekly-report/SKILL.md) | 周报自动生成 — 汇总任务、会议、文档活动 | 日历、任务、云空间、视频会议、云文档 |
+| [`task-prioritizer`](./skills/lark-workflow-task-prioritizer/SKILL.md) | 智能任务排序 — 紧急/重要矩阵 + 时间块建议 | 任务、日历 |
+| [`calendar-optimizer`](./skills/lark-workflow-calendar-optimizer/SKILL.md) | 日程优化 — 冲突诊断、碎片分析、重排建议 | 日历 |
+
+### 🤝 团队协作
+
+| Skill | 说明 | 涉及业务域 |
+|-------|------|-----------|
+| [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | 智能排会 — 多人忙闲查询 + 一键创建日程 | 日历、通讯录 |
+| [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | 会议任务闭环 — 纪要→行动项→任务→通知 | 视频会议、妙记、云文档、通讯录、任务、即时通讯 |
+| [`onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | 新人入职自动化 — 编排 5 个域 | 通讯录、即时通讯、任务、知识库、日历 |
+| [`workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | 团队负载均衡 — 负载热力图 + 分配建议 | 任务、日历、通讯录 |
+| [`approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | 审批加速器 — 进度追踪 + 超时催办 | 审批、即时通讯、通讯录 |
+
+### 📊 数据与分析
+
+| Skill | 说明 | 涉及业务域 |
+|-------|------|-----------|
+| [`base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | 多维表格智能分析 — 趋势、异常、分布洞察 | 多维表格 |
+| [`meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | 会议效率分析 — 时间成本、纪要覆盖率、节奏 | 视频会议、日历、妙记 |
+| [`doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | 文档模板引擎 — 数据驱动批量生成文档 | 云文档、多维表格、电子表格 |
+
+### 📚 知识管理
+
+| Skill | 说明 | 涉及业务域 |
+|-------|------|-----------|
+| [`doc-summarizer`](./skills/lark-workflow-doc-summarizer/SKILL.md) | 文档智能摘要 — 结构化提取要点和决策 | 云文档、知识库、云空间 |
+| [`knowledge-qa`](./skills/lark-workflow-knowledge-qa/SKILL.md) | 知识库问答 — RAG 式问答 + 来源引用 | 知识库、云文档、云空间 |
+| [`wiki-auditor`](./skills/lark-workflow-wiki-auditor/SKILL.md) | 知识库健康审计 — 过时检测 + 健康度评分 | 知识库、云空间 |
+
 ## 工作原理
 
-这些 Skills 是**基于 SKILL.md 的工作流定义** — 它们指导 AI Agent 如何跨多个域编排 lark-cli 命令，以结构化的方式逐步完成复杂任务。
+每个 Skill 都是一个 **SKILL.md 工作流定义文件**，它指导 AI Agent 如何跨多个域编排 lark-cli 命令，以结构化的方式逐步完成复杂任务。
 
 ```
-┌───────────────────────────────────────────────────────┐
-│                    AI Agent                            │
-│  读取 SKILL.md → 理解工作流 → 执行 CLI 命令            │
-└─────────┬─────────────────────────────────────────────┘
-          │
-          ▼
-┌───────────────────────────────────────────────────────┐
-│              lark-workflow Skills                       │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐    │
-│  │  每日简报 │  │  周报生成 │  │   会议任务闭环    │    │
-│  └────┬─────┘  └────┬─────┘  └────┬─────────────┘    │
-└───────┼──────────────┼─────────────┼──────────────────┘
-        │              │             │
-        ▼              ▼             ▼
-┌───────────────────────────────────────────────────────┐
-│              飞书 CLI 原子 Skills                       │
-│  日历 · 任务 · 邮箱 · 审批 · 消息 · 会议 · 文档       │
-│  云空间 · 通讯录 · 妙记 · 多维表格 · 电子表格 · 知识库  │
-└───────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                          AI Agent                                    │
+│     你说："今天有什么安排"                                            │
+│     Agent 读取：daily-briefing/SKILL.md                             │
+│     Agent 执行：calendar → task → mail → approval → AI 汇总简报      │
+└──────────┬──────────────────────────────────────────────────────────┘
+           │
+           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                   lark-workflow Skills（15 个）                       │
+│                                                                      │
+│  个人效率          团队协作          数据分析        知识管理          │
+│  ┌────────────┐  ┌──────────────┐  ┌────────────┐  ┌────────────┐  │
+│  │每日简报    │  │智能排会      │  │表格分析    │  │文档摘要    │  │
+│  │周报生成    │  │会议任务闭环  │  │会议效率    │  │知识问答    │  │
+│  │任务排序    │  │入职自动化    │  │模板引擎    │  │知识审计    │  │
+│  │日程优化    │  │负载均衡      │  └────────────┘  └────────────┘  │
+│  └────────────┘  │审批加速      │                                    │
+│                  └──────────────┘                                    │
+└──────────┬──────────────────────────────────────────────────────────┘
+           │
+           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                  飞书 CLI 原子 Skills（18 个）                        │
+│  日历 · 任务 · 邮箱 · 审批 · 消息 · 会议 · 文档 · 云空间            │
+│  通讯录 · 妙记 · 多维表格 · 电子表格 · 知识库 · 事件 · 画板         │
+└─────────────────────────────────────────────────────────────────────┘
 ```
+
+### SKILL.md 包含什么？
+
+每个 Skill 遵循 [lark-skill-maker](https://github.com/larksuite/cli/tree/main/skills/lark-skill-maker) 标准：
+
+- **YAML frontmatter** — 名称、版本、描述、依赖声明
+- **触发场景** — 自然语言触发词列表
+- **工作流步骤** — Step 1 → 2 → 3... 每步附带精确的 CLI 命令
+- **输出模板** — 结构化 Markdown 格式，确保输出一致
+- **权限表** — 每个命令所需的 OAuth scope
+- **容错机制** — 某个域不可用时的优雅降级
+
+## 认证速查表
+
+每个 Skill 在其 SKILL.md 中列出了所需权限。以下是快速参考：
+
+| Skill | 认证命令 |
+|-------|---------|
+| daily-briefing | `lark-cli auth login --domain calendar,task,mail,approval,im` |
+| weekly-report | `lark-cli auth login --domain calendar,task,drive,vc,doc` |
+| action-extractor | `lark-cli auth login --domain vc,drive,contact,task,im` |
+| doc-summarizer | `lark-cli auth login --domain doc,drive,wiki` |
+| knowledge-qa | `lark-cli auth login --domain wiki,doc,drive` |
+| task-prioritizer | `lark-cli auth login --domain task,calendar` |
+| smart-scheduler | `lark-cli auth login --domain calendar,contact` |
+| approval-accelerator | `lark-cli auth login --domain approval,im,contact` |
+| base-analytics | `lark-cli auth login --domain base,doc` |
+| onboarding | `lark-cli auth login --domain contact,im,task,wiki,calendar` |
+| doc-template-engine | `lark-cli auth login --domain doc,base,drive` |
+| meeting-efficiency | `lark-cli auth login --domain vc,calendar` |
+| workload-balancer | `lark-cli auth login --domain task,calendar,contact` |
+| wiki-auditor | `lark-cli auth login --domain wiki,drive` |
+| calendar-optimizer | `lark-cli auth login --domain calendar` |
+
+> **提示**：使用 `lark-cli auth login --recommend` 一次性授权最常用的 scope。
 
 ## 贡献
 
@@ -96,4 +166,4 @@ lark-cli auth login --recommend
 
 本项目基于 **MIT 许可证** 开源 — 详见 [LICENSE](./LICENSE)。
 
-本软件运行时会调用 [飞书开放平台 API](https://open.feishu.cn/)，使用这些 API 需遵守[飞书用户服务协议](https://www.feishu.cn/terms)和[飞书隐私政策](https://www.feishu.cn/privacy)。
+本软件运行时会调用[飞书开放平台 API](https://open.feishu.cn/)，使用这些 API 需遵守[飞书用户服务协议](https://www.feishu.cn/terms)和[飞书隐私政策](https://www.feishu.cn/privacy)。

@@ -2,92 +2,161 @@
 
 # lark-workflow
 
-Cross-domain workflow skills for [Lark/Feishu CLI](https://github.com/larksuite/cli) — orchestrate multiple business domains into powerful automated workflows.
+> 15 cross-domain workflow skills for [Lark/Feishu CLI](https://github.com/larksuite/cli) — orchestrate multiple business domains into powerful automated workflows.
 
 While [lark-cli](https://github.com/larksuite/cli) provides 18 atomic skills for individual domains (Calendar, IM, Docs, Tasks, etc.), **lark-workflow** combines them into multi-step, cross-domain workflows that solve real-world productivity scenarios.
 
-## Skills
+## Quick Start
 
-| Skill | Description | Domains Used |
-|-------|-------------|-------------|
-| [`lark-workflow-daily-briefing`](./skills/lark-workflow-daily-briefing/SKILL.md) | Daily panoramic briefing — aggregates calendar, tasks, mail, approvals, and messages into a single morning report | Calendar, Task, Mail, Approval, IM |
-| [`lark-workflow-weekly-report`](./skills/lark-workflow-weekly-report/SKILL.md) | Automated weekly report — collects completed tasks, meetings, and document activity to generate a structured weekly summary | Calendar, Task, Drive, VC, Docs |
-| [`lark-workflow-action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | Meeting-to-task closed loop — extracts action items from meeting notes and auto-creates tasks with assignee notifications | VC, Minutes, Docs, Contact, Task, IM |
-| [`lark-workflow-doc-summarizer`](./skills/lark-workflow-doc-summarizer/SKILL.md) | Document summarizer — reads Lark Docs or Wiki pages and generates structured summaries with key points and decisions | Docs, Wiki, Drive |
-| [`lark-workflow-knowledge-qa`](./skills/lark-workflow-knowledge-qa/SKILL.md) | Knowledge base Q&A — RAG-style question answering over Lark Wiki with source citations | Wiki, Docs, Drive |
-| [`lark-workflow-task-prioritizer`](./skills/lark-workflow-task-prioritizer/SKILL.md) | Task prioritizer — Eisenhower matrix analysis with time-block suggestions based on calendar constraints | Task, Calendar |
-| [`lark-workflow-smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | Smart scheduler — finds common free time slots across attendees and creates calendar events | Calendar, Contact |
-| [`lark-workflow-approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | Approval accelerator — tracks approval status, detects timeouts, and sends nudge messages | Approval, IM, Contact |
-| [`lark-workflow-base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | Bitable analytics — trend analysis, anomaly detection, and distribution insights for multidimensional tables | Base |
-| [`lark-workflow-onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | New hire onboarding — auto-joins chats, creates task checklists, sends wiki docs, and schedules training | Contact, IM, Task, Wiki, Calendar |
-| [`lark-workflow-doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | Document template engine — fills Docs templates with Base/Sheets data for batch document generation | Docs, Base, Sheets |
-| [`lark-workflow-meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | Meeting efficiency analysis — measures meeting time cost, note coverage, and schedule patterns | VC, Calendar, Minutes |
-| [`lark-workflow-workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | Team workload balancer — visualizes team member load and suggests optimal task assignments | Task, Calendar, Contact |
-| [`lark-workflow-wiki-auditor`](./skills/lark-workflow-wiki-auditor/SKILL.md) | Wiki health auditor — detects outdated docs, structural issues, and generates health scores | Wiki, Drive |
-| [`lark-workflow-calendar-optimizer`](./skills/lark-workflow-calendar-optimizer/SKILL.md) | Calendar optimizer — diagnoses conflicts, fragmentation, and suggests schedule improvements | Calendar |
-
-## Installation
-
-### Prerequisites
-
-- [lark-cli](https://github.com/larksuite/cli) installed and authenticated
-- Node.js (npm/npx)
+### 1. Install
 
 ```bash
 # Install lark-cli (if not already installed)
 npm install -g @larksuite/cli
 
-# Install lark-cli official skills (required)
+# Install official lark-cli skills (required dependency)
 npx skills add larksuite/cli -y -g
 
 # Install lark-workflow skills
 npx skills add woodfantasy/lark-workflow -y -g
 ```
 
-### Authentication
-
-Each skill requires specific domain permissions. Log in with the necessary scopes before use:
+### 2. Authenticate
 
 ```bash
-# For daily-briefing (all 5 domains)
-lark-cli auth login --domain calendar,task,mail,approval,im
-
-# For weekly-report
-lark-cli auth login --domain calendar,task,drive,vc,doc
-
-# For action-extractor
-lark-cli auth login --domain vc,drive,contact,task,im
-
-# Or simply use --recommend for commonly used scopes
+# Recommended: authorize all commonly used domains at once
 lark-cli auth login --recommend
 ```
 
+### 3. Use
+
+Simply tell your AI Agent what you need in natural language:
+
+```
+💬 "Give me today's briefing"           → daily-briefing
+💬 "Write my weekly report"             → weekly-report
+💬 "Extract action items from meeting"  → action-extractor
+💬 "Summarize this document"            → doc-summarizer
+💬 "What does the wiki say about X?"    → knowledge-qa
+💬 "Prioritize my tasks for today"      → task-prioritizer
+💬 "Schedule a meeting with X and Y"    → smart-scheduler
+💬 "Where's my approval at?"            → approval-accelerator
+💬 "Analyze this Bitable"               → base-analytics
+💬 "New hire X is joining"              → onboarding
+💬 "Generate docs from template"        → doc-template-engine
+💬 "How efficient are my meetings?"     → meeting-efficiency
+💬 "Who has bandwidth on the team?"     → workload-balancer
+💬 "Audit the wiki for stale docs"      → wiki-auditor
+💬 "Optimize my calendar"               → calendar-optimizer
+```
+
+The AI Agent reads the corresponding SKILL.md, understands the workflow, and executes the right lark-cli commands automatically.
+
+## Skills
+
+### 🔄 Personal Productivity
+
+| Skill | Description | Domains |
+|-------|-------------|---------|
+| [`daily-briefing`](./skills/lark-workflow-daily-briefing/SKILL.md) | Panoramic daily briefing across 5 domains | Calendar, Task, Mail, Approval, IM |
+| [`weekly-report`](./skills/lark-workflow-weekly-report/SKILL.md) | Automated weekly report from tasks, meetings, and docs | Calendar, Task, Drive, VC, Docs |
+| [`task-prioritizer`](./skills/lark-workflow-task-prioritizer/SKILL.md) | Eisenhower matrix + time-block suggestions | Task, Calendar |
+| [`calendar-optimizer`](./skills/lark-workflow-calendar-optimizer/SKILL.md) | Conflict diagnosis and schedule optimization | Calendar |
+
+### 🤝 Team Collaboration
+
+| Skill | Description | Domains |
+|-------|-------------|---------|
+| [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | Multi-attendee free slot finder + event creation | Calendar, Contact |
+| [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | Meeting → notes → tasks → notifications closed loop | VC, Minutes, Docs, Contact, Task, IM |
+| [`onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | New hire automation across 5 domains | Contact, IM, Task, Wiki, Calendar |
+| [`workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | Team workload heatmap + assignment suggestions | Task, Calendar, Contact |
+| [`approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | Approval tracking + timeout nudge messaging | Approval, IM, Contact |
+
+### 📊 Data & Analytics
+
+| Skill | Description | Domains |
+|-------|-------------|---------|
+| [`base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | Bitable trend analysis, anomaly detection, insights | Base |
+| [`meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | Meeting time cost, note coverage, pattern analysis | VC, Calendar, Minutes |
+| [`doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | Data-driven batch document generation | Docs, Base, Sheets |
+
+### 📚 Knowledge Management
+
+| Skill | Description | Domains |
+|-------|-------------|---------|
+| [`doc-summarizer`](./skills/lark-workflow-doc-summarizer/SKILL.md) | Structured document/wiki summaries | Docs, Wiki, Drive |
+| [`knowledge-qa`](./skills/lark-workflow-knowledge-qa/SKILL.md) | RAG-style Q&A with source citations | Wiki, Docs, Drive |
+| [`wiki-auditor`](./skills/lark-workflow-wiki-auditor/SKILL.md) | Knowledge base health scoring + stale doc detection | Wiki, Drive |
+
 ## How It Works
 
-These skills are **SKILL.md-based workflow definitions** — they teach AI Agents how to orchestrate lark-cli commands across multiple domains in a structured, step-by-step manner.
+These skills are **SKILL.md-based workflow definitions**. Each SKILL.md file teaches an AI Agent how to orchestrate multiple lark-cli commands in a structured, step-by-step manner.
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    AI Agent                              │
-│  Reads SKILL.md → Understands workflow → Executes CLIs  │
-└──────────┬──────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                          AI Agent                                    │
+│     You say: "Give me today's briefing"                             │
+│     Agent reads: daily-briefing/SKILL.md                            │
+│     Agent executes: calendar → task → mail → approval → AI summary  │
+└──────────┬──────────────────────────────────────────────────────────┘
            │
            ▼
-┌──────────────────────────────────────────────────────────┐
-│              lark-workflow Skills                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐       │
-│  │  daily   │  │  weekly  │  │    action        │       │
-│  │ briefing │  │  report  │  │   extractor      │       │
-│  └────┬─────┘  └────┬─────┘  └────┬─────────────┘       │
-└───────┼──────────────┼─────────────┼─────────────────────┘
-        │              │             │
-        ▼              ▼             ▼
-┌──────────────────────────────────────────────────────────┐
-│              lark-cli Atomic Skills                      │
-│  calendar · task · mail · approval · im · vc · docs     │
-│  drive · contact · minutes · base · sheets · wiki       │
-└──────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                    lark-workflow Skills (15)                          │
+│                                                                      │
+│  Personal          Team             Analytics       Knowledge        │
+│  ┌────────────┐  ┌──────────────┐  ┌────────────┐  ┌────────────┐  │
+│  │briefing    │  │scheduler     │  │base-analyt.│  │doc-summary │  │
+│  │weekly-rpt  │  │action-extr.  │  │meeting-eff.│  │knowledge-qa│  │
+│  │task-prior. │  │onboarding    │  │doc-template│  │wiki-auditor│  │
+│  │cal-optimiz.│  │workload-bal. │  └────────────┘  └────────────┘  │
+│  └────────────┘  │approval-acc. │                                    │
+│                  └──────────────┘                                    │
+└──────────┬──────────────────────────────────────────────────────────┘
+           │
+           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                  lark-cli Atomic Skills (18)                          │
+│  calendar · task · mail · approval · im · vc · docs · drive         │
+│  contact · minutes · base · sheets · wiki · event · whiteboard      │
+└─────────────────────────────────────────────────────────────────────┘
 ```
+
+### What makes a SKILL.md?
+
+Each skill follows the [lark-skill-maker](https://github.com/larksuite/cli/tree/main/skills/lark-skill-maker) standard:
+
+- **YAML frontmatter** — name, version, description, dependencies
+- **Trigger phrases** — natural language patterns that activate the skill
+- **Workflow steps** — Step 1 → 2 → 3... with exact CLI commands
+- **Output template** — structured Markdown format for consistent results
+- **Permission table** — required OAuth scopes per command
+- **Error handling** — graceful degradation when a domain is unavailable
+
+## Authentication Reference
+
+Each skill lists required scopes in its SKILL.md. Here's a quick reference:
+
+| Skill | Auth Command |
+|-------|-------------|
+| daily-briefing | `lark-cli auth login --domain calendar,task,mail,approval,im` |
+| weekly-report | `lark-cli auth login --domain calendar,task,drive,vc,doc` |
+| action-extractor | `lark-cli auth login --domain vc,drive,contact,task,im` |
+| doc-summarizer | `lark-cli auth login --domain doc,drive,wiki` |
+| knowledge-qa | `lark-cli auth login --domain wiki,doc,drive` |
+| task-prioritizer | `lark-cli auth login --domain task,calendar` |
+| smart-scheduler | `lark-cli auth login --domain calendar,contact` |
+| approval-accelerator | `lark-cli auth login --domain approval,im,contact` |
+| base-analytics | `lark-cli auth login --domain base,doc` |
+| onboarding | `lark-cli auth login --domain contact,im,task,wiki,calendar` |
+| doc-template-engine | `lark-cli auth login --domain doc,base,drive` |
+| meeting-efficiency | `lark-cli auth login --domain vc,calendar` |
+| workload-balancer | `lark-cli auth login --domain task,calendar,contact` |
+| wiki-auditor | `lark-cli auth login --domain wiki,drive` |
+| calendar-optimizer | `lark-cli auth login --domain calendar` |
+
+> **Tip:** Use `lark-cli auth login --recommend` to authorize the most commonly used scopes in one step.
 
 ## Contributing
 
