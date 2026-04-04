@@ -104,8 +104,9 @@ lark-cli mail +inbox --unread --limit 20 --format json
 > **降级处理**：如果用户未授权 approval 域，跳过此步，在简报中标注"审批模块未授权"。
 
 ```bash
-# 查看我的待处理审批任务
-lark-cli approval +my-tasks --status PENDING --format json
+# 查看待我处理的审批任务（topic=2）
+# 注意：approval 域没有 Shortcut（+verb），必须使用原生 API
+lark-cli approval tasks query --data '{"page_size":20,"topic":2}' --format json
 ```
 
 若命令报权限错误或返回空数据，直接跳过，不阻塞流程。
@@ -192,7 +193,7 @@ lark-cli docs +create --title "每日简报 (<date>)" --markdown "<内容>"
 | 日程 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
 | 任务 | `task +get-my-tasks` | `task:task:read` | ✅ 必选 |
 | 邮件 | `mail +inbox` | `mail:mail:readonly` | 可选 |
-| 审批 | `approval +my-tasks` | `approval:approval:read` | 可选 |
+| 审批 | `approval tasks query` | `approval:task:read` | 可选 |
 | 消息 | `im +messages-search` | `im:message:readonly` | 可选 |
 | 文档 | `docs +create` | `docx:document:write` | 可选（生成文档时） |
 

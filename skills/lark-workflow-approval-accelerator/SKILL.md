@@ -34,6 +34,16 @@ metadata:
 lark-cli auth login --domain approval,im,contact
 ```
 
+## 重要：approval 域命令格式
+
+> **⚠️ approval 域没有 Shortcut（`+verb`）命令，必须使用原生 API 格式。**
+>
+> 使用前必须先查看参数结构：
+> ```bash
+> lark-cli schema approval.<resource>.<method>   # 查看参数结构
+> lark-cli approval <resource> <method> [flags]   # 调用 API
+> ```
+
 ## 工作流
 
 ```
@@ -44,9 +54,8 @@ lark-cli auth login --domain approval,im,contact
  "我发起的审批"      "待我审批的"
      │                    │
      ▼                    ▼
- approval               approval
- +my-instances           +my-tasks
- (查询我发起的)          (查询待我审批的)
+ approval tasks query  approval tasks query
+ (topic=1, 我发起的)   (topic=2, 待我处理的)
      │                    │
      ▼                    ▼
  过滤 PENDING 状态    展示待处理列表
@@ -68,38 +77,62 @@ lark-cli auth login --domain approval,im,contact
 | **查看我发起的审批** | "我的审批到哪了"、"审批进度"、"催审批" | 追踪 + 催办 |
 | **查看待我审批的** | "等我审批的"、"待处理审批" | 待办提醒 |
 
-### Step 2A: 查看我发起的审批（追踪模式）
+### Step 2: 查看参数结构（首次使用时）
+
+```bash
+# 先查看 tasks.query 的参数结构
+lark-cli schema approval.tasks.query
+```
+
+> **关键参数**：
+> - `topic`: **1** = 我发起的审批任务, **2** = 待我处理的审批任务
+> - `user_id`: 可不传，默认查询当前登录用户
+
+### Step 3A: 查看我发起的审批（追踪模式）
 
 参考 [`lark-approval/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-approval/SKILL.md)。
 
 ```bash
-# 查询我发起的审批实例
-lark-cli approval +my-instances --status PENDING --format json
+# 查询我发起的审批任务（topic=1）
+lark-cli approval tasks query --data '{"page_size":20,"topic":1}' --format json
 ```
 
-从返回结果中提取每个审批的：
+从返回结果中，对每个审批任务提取：
+- `task_id`：审批任务 ID
 - `instance_id`：审批实例 ID
-- `approval_name`：审批类型名称
-- `title`：审批标题/摘要
-- `status`：当前状态（PENDING / APPROVED / REJECTED / CANCELLED）
-- `create_time`：发起时间
-- `task_list`：审批节点列表（当前停在哪个节点、审批人是谁）
+- `status`：任务状态（`PENDING` / `APPROVED` / `REJECTED` 等）
+- `title`：审批标题
+- `start_time`：任务开始时间（Unix 时间戳，秒）
 
-### Step 2B: 查看待我审批的（待办模式）
+> **注意**：如需查看更多详情，可对具体实例调用 `instances get`。
+
+### Step 3B: 查看待我审批的（待办模式）
 
 ```bash
-# 查询等待我审批的任务
-lark-cli approval +my-tasks --status PENDING --format json
+# 查询待我处理的审批任务（topic=2）
+lark-cli approval tasks query --data '{"page_size":20,"topic":2}' --format json
 ```
 
-从返回结果中提取每个任务的：
-- `instance_id`：审批实例 ID
-- `approval_name`：审批类型名称
-- `title`：审批标题
-- `start_time`：进入该节点的时间
-- `initiator`：发起人信息
+### Step 4: 获取审批实例详情
 
-### Step 3: 分析等待时间
+对需要详细追踪的审批实例，获取完整信息：
+
+```bash
+# 先查看参数结构
+lark-cli schema approval.instances.get
+
+# 获取实例详情
+lark-cli approval instances get --params '{"instance_id":"<instance_id>"}' --format json
+```
+
+从实例详情中提取：
+- `approval_name`：审批定义名称
+- `status`：实例状态
+- `start_time`：发起时间
+- `timeline`：审批时间线（包含每个节点的处理信息）
+- `task_list`：当前审批节点列表（`PENDING` 的即为当前卡在的节点）
+
+### Step 5: 分析等待时间
 
 ```bash
 # 获取当前时间用于计算等待时长
@@ -114,9 +147,9 @@ date "+%s"
 | 紧急审批 | 4 小时 | 标题含"紧急"、"加急" |
 | 请假/报销 | 48 小时 | 非紧急行政审批 |
 
-**等待时间计算**：`当前时间 - 审批进入当前节点的时间`
+**等待时间计算**：`当前时间(秒) - start_time` （start_time 为 Unix 时间戳）
 
-### Step 4: 展示审批状态
+### Step 6: 展示审批状态
 
 **追踪模式输出：**
 
@@ -139,7 +172,7 @@ date "+%s"
 ### 📊 近期已完成
 
 | # | 审批类型 | 标题 | 结果 | 完成时间 |
-|---|---------|------|------|---------|
+|---|---------|------|------|---------| 
 | 4 | 加班申请 | 3月周末加班 | ✅ 通过 | 昨天 |
 | 5 | 出差申请 | 上海出差 3天 | ✅ 通过 | 3天前 |
 
@@ -165,27 +198,21 @@ date "+%s"
 | 3 | 采购申请 | 小张 | 采购键盘鼠标 ¥800 | 1小时 |
 ```
 
-### Step 5: 发送催办消息（用户确认后）
+### Step 7: 发送催办消息（用户确认后）
 
 > **⚠️ 安全规则：必须等用户确认后才发送催办消息。**
 
-**Step 5.1: 获取审批人信息**
+**Step 7.1: 获取审批人信息**
 
-```bash
-# 查询审批实例详情（获取当前审批节点的审批人）
-lark-cli approval instances get --params '{"instance_id":"<instance_id>"}' --format json
-```
+从 Step 4 中得到的 `timeline` 或 `task_list` 找到 `PENDING` 状态的审批人 `user_id`。
 
-从 `task_list` 中找到状态为 `PENDING` 的节点，提取 `user_id`。
-
-**Step 5.2: 查询审批人的联系方式**
-
+如需通过姓名搜索用户：
 ```bash
 # 获取用户信息用于发送消息
 lark-cli contact +search --query "<审批人姓名>" --format json
 ```
 
-**Step 5.3: 发送催办消息**
+**Step 7.2: 发送催办消息**
 
 参考 [`lark-im/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-im/SKILL.md)。
 
@@ -200,7 +227,7 @@ lark-cli im +messages-send \
 
 > **注意**：催办消息语气应礼貌、专业。不应连续对同一审批人重复催办（建议每 24 小时最多催办 1 次）。
 
-### Step 6: 输出执行报告
+### Step 8: 输出执行报告
 
 ```markdown
 ## 催办执行报告
@@ -219,6 +246,7 @@ lark-cli im +messages-send \
 |---------|---------|
 | approval 域未授权 | 提示用户授权，显示授权命令 |
 | 无待处理审批 | 告知"当前没有进行中的审批" |
+| API 参数不确定 | 先执行 `lark-cli schema approval.<resource>.<method>` 查看结构 |
 | 审批人 user_id 无法获取 | 展示审批信息但标注"无法自动催办" |
 | 消息发送失败 | 记录失败，建议用户手动沟通 |
 | 审批类型无法识别 | 使用通用超时阈值（24 小时） |
@@ -227,15 +255,14 @@ lark-cli im +messages-send \
 
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
-| 我发起的审批 | `approval +my-instances` | `approval:approval:read` | ✅ 必选 |
-| 待我审批 | `approval +my-tasks` | `approval:approval:read` | ✅ 必选 |
-| 审批详情 | `approval instances get` | `approval:approval:read` | ✅ 必选（催办时） |
+| 查询审批任务 | `approval tasks query` | `approval:task:read` | ✅ 必选 |
+| 审批实例详情 | `approval instances get` | `approval:instance:read` | ✅ 必选（催办时） |
 | 搜索用户 | `contact +search` | `contact:user.base:readonly` | 推荐（催办时） |
 | 发送催办 | `im +messages-send` | `im:message:send_as_bot` 或 `im:message` | 推荐（催办时） |
 
 ## 参考
 
 - [lark-shared](https://github.com/larksuite/cli/blob/main/skills/lark-shared/SKILL.md) — 认证、权限（必读）
-- [lark-approval](https://github.com/larksuite/cli/blob/main/skills/lark-approval/SKILL.md) — `+my-instances`、`+my-tasks`、实例查询详细用法
+- [lark-approval](https://github.com/larksuite/cli/blob/main/skills/lark-approval/SKILL.md) — `tasks query`、`instances get` 等原生 API 用法
 - [lark-contact](https://github.com/larksuite/cli/blob/main/skills/lark-contact/SKILL.md) — `+search` 详细用法
 - [lark-im](https://github.com/larksuite/cli/blob/main/skills/lark-im/SKILL.md) — 消息发送详细用法
