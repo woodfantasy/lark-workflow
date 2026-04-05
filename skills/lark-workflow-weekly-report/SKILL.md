@@ -1,13 +1,10 @@
 ---
 name: lark-workflow-weekly-report
 version: 1.0.0
-description: >
-  周报自动生成：聚合一周的日程、已完成任务、会议纪要、文档活动，自动生成结构化周报。
-  当用户需要写周报、生成工作总结、回顾本周工作、或问「帮我写周报」时使用。
+description: "周报自动生成：聚合一周的日程、已完成任务、会议纪要、文档活动，自动生成结构化周报。 当用户需要写周报、生成工作总结、回顾本周工作、或问「帮我写周报」时使用。"
 metadata:
   requires:
-    bins:
-      - lark-cli
+    bins: ["lark-cli"]
 ---
 
 # 周报自动生成工作流
@@ -21,8 +18,6 @@ metadata:
 - "周报" / "weekly report"
 - "回顾上周工作" / "上周总结"
 - "帮我总结这周完成了什么"
-
-## 与其他 Skill 的区别
 
 - `standup-report`（官方）：聚合**当日**日程 + 待办 → 时间导向
 - `meeting-summary`（官方）：仅汇总会议纪要

@@ -1,14 +1,10 @@
 ---
 name: lark-workflow-action-extractor
 version: 1.0.0
-description: >
-  会议任务闭环：从会议纪要中提取行动项，自动创建飞书任务并通知责任人，
-  形成「会议→纪要→行动项→任务→通知」的完整闭环。当用户需要把会议纪要变成任务、
-  提取 action items、跟进会议决策、或问「把今天的会议纪要整理成任务」时使用。
+description: "会议任务闭环：从会议纪要中提取行动项，自动创建飞书任务并通知责任人， 形成「会议→纪要→行动项→任务→通知」的完整闭环。当用户需要把会议纪要变成任务、 提取 action items、跟进会议决策、或问「把今天的会议纪要整理成任务」时使用。"
 metadata:
   requires:
-    bins:
-      - lark-cli
+    bins: ["lark-cli"]
 ---
 
 # 会议任务闭环工作流
@@ -22,8 +18,6 @@ metadata:
 - "今天的会议有哪些待办" / "把会议结论变成任务分配下去"
 - "Extract action items from meeting" / "meeting to tasks"
 - "XX 会议的行动项是什么" / "帮我把会议里说的那些事情建成任务"
-
-## 核心价值
 
 形成 **会议 → 纪要 → 行动项 → 任务 → 通知 → 跟踪** 的完整闭环。这是现有官方 Skill 都没有覆盖的端到端场景。
 
