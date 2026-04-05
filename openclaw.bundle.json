@@ -1,0 +1,6 @@
+{
+  "id": "lark-workflow",
+  "name": "Lark Workflow",
+  "format": "skills-bundle",
+  "hostTargets": ["openclaw", "claude", "gemini"]
+}
