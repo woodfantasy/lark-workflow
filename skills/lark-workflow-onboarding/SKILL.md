@@ -105,6 +105,8 @@ lark-cli contact +search --query "<新人姓名>" --format json
 
 参考 [`lark-im/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-im/SKILL.md)。
 
+**方式 A：加入已有群聊（默认）**
+
 ```bash
 # 搜索目标群聊
 lark-cli im +chats-search --query "<群名关键词>" --format json
@@ -112,7 +114,25 @@ lark-cli im +chats-search --query "<群名关键词>" --format json
 # 拉入群聊
 lark-cli im chats members create --params '{"chat_id":"<chat_id>"}' \
   --data '{"id_list":["<user_id>"]}' --format json
+```
 
+> **注意**：拉人入群可能需要 bot 身份或群管理员权限。如失败，提示用户手动邀请。
+
+**方式 B：创建专属入职群（用户要求时）**
+
+> v1.0.4+ 支持 `--as user` 创建群聊，群主为当前用户而非 bot，更适合团队管理。
+
+```bash
+# 创建入职专属群（user 身份，群主为当前用户）
+lark-cli im +chat-create --as user \
+  --name "{新人姓名} 入职引导群" \
+  --user-ids "<新人user_id>,<leader_user_id>" \
+  --format json
+```
+
+**发送欢迎消息：**
+
+```bash
 # 在群里发送欢迎消息
 lark-cli im +messages-send \
   --receive-id "<chat_id>" \
@@ -120,8 +140,6 @@ lark-cli im +messages-send \
   --msg-type "text" \
   --content '{"text":"🎉 欢迎 @{新人姓名} 加入团队！\n\n{新人姓名}将加入{部门}，负责{岗位方向}。\n\n大家多多支持 🙌"}'
 ```
-
-> **注意**：拉人入群可能需要 bot 身份或群管理员权限。如失败，提示用户手动邀请。
 
 ### Step 4: 创建入职任务清单
 
@@ -238,6 +256,7 @@ lark-cli calendar +create-event \
 | 搜索用户 | `contact +search` | `contact:user.base:readonly` | ✅ 必选 |
 | 搜索群聊 | `im +chats-search` | `im:chat:readonly` | ✅ 必选 |
 | 拉入群聊 | `im chats members create` | `im:chat:member:write` | ✅ 必选 |
+| 创建群聊 | `im +chat-create --as user` | `im:chat:create_by_user` | 可选（方式 B） |
 | 发送消息 | `im +messages-send` | `im:message` | ✅ 必选 |
 | 创建任务 | `task +create` | `task:task:write` | ✅ 必选 |
 | 搜索知识库 | `wiki spaces nodes search` | `wiki:wiki:readonly` | 可选 |
