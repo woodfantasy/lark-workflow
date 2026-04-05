@@ -205,6 +205,7 @@ lark-cli calendar +reply-event --event "<event_id>" --rsvp "decline"
 | 异常场景 | 处理方式 |
 |---------|---------|
 | 目标日期无日程 | 提示"该日期暂无日程"，建议选择其他日期 |
+| calendar 命令报权限或身份错误 | v1.0.4 起 calendar 不再自动回退到 bot 身份，需显式 user 登录。提示用户执行 `lark-cli auth login --domain calendar` |
 | 无法修改他人日程 | 建议拒绝或联系组织者协调 |
 | 全天事件 | 标记但不参与冲突计算（除非用户指定） |
 | 已拒绝的日程 | 标记为"已拒绝"，不参与冲突和时间计算 |
