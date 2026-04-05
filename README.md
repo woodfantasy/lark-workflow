@@ -10,6 +10,8 @@ While [lark-cli](https://github.com/larksuite/cli) provides 18 atomic skills for
 
 ### 1. Install
 
+**Option A: via npx (GitHub source)**
+
 ```bash
 # Install lark-cli (if not already installed)
 npm install -g @larksuite/cli
@@ -19,6 +21,12 @@ npx skills add larksuite/cli -y -g
 
 # Install lark-workflow skills
 npx skills add woodfantasy/lark-workflow -y -g
+```
+
+**Option B: via OpenClaw (ClawHub)**
+
+```bash
+openclaw install lark-workflow
 ```
 
 ### 2. Authenticate

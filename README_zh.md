@@ -10,6 +10,8 @@
 
 ### 1. 安装
 
+**方式 A：通过 npx（GitHub 源）**
+
 ```bash
 # 安装飞书 CLI（如未安装）
 npm install -g @larksuite/cli
@@ -19,6 +21,12 @@ npx skills add larksuite/cli -y -g
 
 # 安装 lark-workflow Skills
 npx skills add woodfantasy/lark-workflow -y -g
+```
+
+**方式 B：通过 OpenClaw（ClawHub）**
+
+```bash
+openclaw install lark-workflow
 ```
 
 ### 2. 认证
