@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.1] - 2026-04-07
+
+### Enhanced
+- `smart-scheduler` — Added meeting room discovery and booking: query available rooms, check room freebusy, and book room alongside event creation for one-stop "people + room" scheduling
+
 ## [0.3.0] - 2026-04-03
 
 ### Added

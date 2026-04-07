@@ -75,7 +75,7 @@ The AI Agent reads the corresponding SKILL.md, understands the workflow, and exe
 
 | Skill | Description | Domains |
 |-------|-------------|---------|
-| [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | Multi-attendee free slot finder + event creation | Calendar, Contact |
+| [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | Multi-attendee free slot finder + room booking + event creation | Calendar, Contact |
 | [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | Meeting → notes → tasks → notifications closed loop | VC, Minutes, Docs, Contact, Task, IM |
 | [`onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | New hire automation across 5 domains | Contact, IM, Task, Wiki, Calendar |
 | [`workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | Team workload heatmap + assignment suggestions | Task, Calendar, Contact |

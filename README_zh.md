@@ -75,7 +75,7 @@ AI Agent 会自动读取对应的 SKILL.md，理解工作流，执行正确的 l
 
 | Skill | 说明 | 涉及业务域 |
 |-------|------|-----------|
-| [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | 智能排会 — 多人忙闲查询 + 一键创建日程 | 日历、通讯录 |
+| [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | 智能排会 — 多人忙闲查询 + 会议室预约 + 一键创建日程 | 日历、通讯录 |
 | [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | 会议任务闭环 — 纪要→行动项→任务→通知 | 视频会议、妙记、云文档、通讯录、任务、即时通讯 |
 | [`onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | 新人入职自动化 — 编排 5 个域 | 通讯录、即时通讯、任务、知识库、日历 |
 | [`workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | 团队负载均衡 — 负载热力图 + 分配建议 | 任务、日历、通讯录 |
