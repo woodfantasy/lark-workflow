@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-base-analytics
-version: 1.0.0
+version: 1.0.2
 description: "多维表格智能分析：读取飞书多维表格的结构和数据，进行趋势分析、异常检测和数据洞察， 生成结构化分析报告。当用户需要分析多维表格数据、查看数据趋势、 或问「帮我分析一下这个表」时使用。"
 metadata:
   requires:
@@ -32,7 +32,7 @@ lark-cli auth login --domain base,doc
 ## 工作流
 
 ```
-用户指定 Base ──► 解析 app_token / table_id
+用户指定 Base ──► 解析 base_token / table_id
                        │
                        ▼
               base +field-list（获取表结构）
@@ -57,11 +57,11 @@ lark-cli auth login --domain base,doc
 
 **A. Base 链接：**
 ```
-https://xxx.feishu.cn/base/<app_token>?table=<table_id>&view=<view_id>
+https://xxx.feishu.cn/base/<base_token>?table=<table_id>&view=<view_id>
 ```
-提取 `app_token`、`table_id`、`view_id`。
+提取 `base_token`、`table_id`、`view_id`。
 
-**B. 直接提供 app_token + table_id：**
+**B. 直接提供 base_token + table_id：**
 
 直接进入 Step 2。
 
@@ -75,10 +75,10 @@ https://xxx.feishu.cn/base/<app_token>?table=<table_id>&view=<view_id>
 
 ```bash
 # 列出所有数据表
-lark-cli base +table-list --app-token "<app_token>" --format json
+lark-cli base +table-list --base-token "<base_token>" --format json
 
 # 获取目标表的字段结构
-lark-cli base +field-list --app-token "<app_token>" --table-id "<table_id>" --format json
+lark-cli base +field-list --base-token "<base_token>" --table-id "<table_id>" --format json
 ```
 
 从字段列表中识别：
@@ -92,7 +92,7 @@ lark-cli base +field-list --app-token "<app_token>" --table-id "<table_id>" --fo
 
 ```bash
 # 使用 data-query 进行聚合（推荐方式）
-lark-cli base +data-query --app-token "<app_token>" --table-id "<table_id>" \
+lark-cli base +data-query --base-token "<base_token>" --table-id "<table_id>" \
   --field-names '["<字段1>","<字段2>"]' \
   --group-by '["<分组字段>"]' \
   --aggregations '[{"field_name":"<数值字段>","type":"sum"}]' \
@@ -110,7 +110,7 @@ lark-cli base +data-query --app-token "<app_token>" --table-id "<table_id>" \
 
 ```bash
 # 获取记录样本（当需要逐行分析时）
-lark-cli base +record-list --app-token "<app_token>" --table-id "<table_id>" \
+lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
   --page-size 100 --format json
 ```
 
@@ -200,7 +200,7 @@ lark-cli docs +create --title "数据分析报告：{表名} (<date>)" --markdow
 | 数据量 >500 条 | 使用 `+data-query` 聚合查询，不逐行获取 |
 | 表为空（0 条记录） | 提示"该表暂无数据" |
 | 字段类型无法聚合 | 跳过该字段，分析其他可聚合字段 |
-| app_token 无权限 | 提示用户检查 Base 分享权限 |
+| base_token 无权限 | 提示用户检查 Base 分享权限 |
 
 ## 权限表
 

@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-calendar-optimizer
-version: 1.0.0
+version: 1.0.2
 description: "日程优化助手：分析指定日期的日程安排，检测时间冲突、碎片化和不合理排列， 生成优化建议和重排方案。当用户需要优化日程、解决日程冲突、 或问「帮我优化明天的日程」时使用。"
 metadata:
   requires:
@@ -44,7 +44,7 @@ lark-cli auth login --domain calendar
               诊断报告 + 优化方案
                        │
                        ▼（用户确认）
-              calendar +update-event / +delete-event（可选执行）
+              calendar events patch / events delete（可选执行）
 ```
 
 ### Step 1: 获取日程数据
@@ -180,18 +180,18 @@ C. 首尾相连（无缓冲）：事件 B 开始时间 == 事件 A 结束时间
 
 ```bash
 # 修改日程时间
-lark-cli calendar +update-event --event "<event_id>" \
+lark-cli calendar events patch --event "<event_id>" \
   --start "<新开始时间>" --end "<新结束时间>"
 
 # 或取消日程（如果用户决定推掉某个会议）
-lark-cli calendar +delete-event --event "<event_id>"
+lark-cli calendar events delete --event "<event_id>"
 ```
 
 > **注意**：修改他人发起的日程可能无权限。如果是他人组织的会议，建议改为"拒绝"而非修改时间。
 
 ```bash
 # 拒绝日程
-lark-cli calendar +reply-event --event "<event_id>" --rsvp "decline"
+lark-cli calendar +rsvp --event "<event_id>" --rsvp "decline"
 ```
 
 ## 容错机制
@@ -199,7 +199,7 @@ lark-cli calendar +reply-event --event "<event_id>" --rsvp "decline"
 | 异常场景 | 处理方式 |
 |---------|---------|
 | 目标日期无日程 | 提示"该日期暂无日程"，建议选择其他日期 |
-| calendar 命令报权限或身份错误 | v1.0.4 起 calendar 不再自动回退到 bot 身份，需显式 user 登录。提示用户执行 `lark-cli auth login --domain calendar` |
+| calendar 命令报权限或身份错误 | v1.0.5 起 calendar 不再自动回退到 bot 身份，需显式 user 登录。提示用户执行 `lark-cli auth login --domain calendar` |
 | 无法修改他人日程 | 建议拒绝或联系组织者协调 |
 | 全天事件 | 标记但不参与冲突计算（除非用户指定） |
 | 已拒绝的日程 | 标记为"已拒绝"，不参与冲突和时间计算 |
@@ -209,11 +209,11 @@ lark-cli calendar +reply-event --event "<event_id>" --rsvp "decline"
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
 | 获取日程 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
-| 修改日程 | `calendar +update-event` | `calendar:calendar.event:write` | 可选（执行优化时） |
-| 拒绝日程 | `calendar +reply-event` | `calendar:calendar.event:write` | 可选 |
-| 删除日程 | `calendar +delete-event` | `calendar:calendar.event:write` | 可选 |
+| 修改日程 | `calendar events patch` | `calendar:calendar.event:write` | 可选（执行优化时） |
+| 拒绝日程 | `calendar +rsvp` | `calendar:calendar.event:write` | 可选 |
+| 删除日程 | `calendar events delete` | `calendar:calendar.event:write` | 可选 |
 
 ## 参考
 
 - [lark-shared](https://github.com/larksuite/cli/blob/main/skills/lark-shared/SKILL.md) — 认证、权限（必读）
-- [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — `+agenda`、`+update-event`、`+reply-event` 详细用法
+- [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — `+agenda`、`events patch`、`+rsvp` 详细用法

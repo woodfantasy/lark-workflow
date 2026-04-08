@@ -197,7 +197,7 @@ lark-cli im +messages-send \
 
 ```bash
 # 安排 1v1 入职引导会议
-lark-cli calendar +create-event \
+lark-cli calendar +create \
   --summary "入职引导 - {新人姓名} & {Leader姓名}" \
   --start "<入职日>T10:00:00+08:00" \
   --end "<入职日>T11:00:00+08:00" \
@@ -254,7 +254,7 @@ lark-cli calendar +create-event \
 | 发送消息 | `im +messages-send` | `im:message` | ✅ 必选 |
 | 创建任务 | `task +create` | `task:task:write` | ✅ 必选 |
 | 搜索知识库 | `wiki spaces nodes search` | `wiki:wiki:readonly` | 可选 |
-| 创建日程 | `calendar +create-event` | `calendar:calendar.event:write` | 可选 |
+| 创建日程 | `calendar +create` | `calendar:calendar.event:write` | 可选 |
 
 ## 参考
 
@@ -263,4 +263,4 @@ lark-cli calendar +create-event \
 - [lark-im](https://github.com/larksuite/cli/blob/main/skills/lark-im/SKILL.md) — 群聊管理、消息发送
 - [lark-task](https://github.com/larksuite/cli/blob/main/skills/lark-task/SKILL.md) — 任务创建
 - [lark-wiki](https://github.com/larksuite/cli/blob/main/skills/lark-wiki/SKILL.md) — 知识库搜索
-- [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — `+create-event`
+- [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — `+create`

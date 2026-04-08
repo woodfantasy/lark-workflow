@@ -90,10 +90,10 @@ lark-cli docs +fetch --doc "<模板doc_token>" --format markdown
 
 ```bash
 # 获取表字段结构
-lark-cli base +field-list --app-token "<app_token>" --table-id "<table_id>" --format json
+lark-cli base +field-list --base-token "<base_token>" --table-id "<table_id>" --format json
 
 # 获取记录数据
-lark-cli base +record-list --app-token "<app_token>" --table-id "<table_id>" \
+lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
   --page-size 100 --format json
 ```
 

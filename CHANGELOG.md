@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.2] - 2026-04-08
+
+### Changed
+- **lark-cli v1.0.5 compatibility** — Adapt all workflows to upstream breaking changes:
+  - `smart-scheduler` — Use `+freebusy` / `+suggestion` Shortcuts for intelligent scheduling; rename `+create-event` → `+create`
+  - `calendar-optimizer` — Rename `+update-event` → `events patch`, `+delete-event` → `events delete`, `+reply-event` → `+rsvp`
+  - `base-analytics` — Unified Base parameter `--app-token` → `--base-token`
+  - `doc-template-engine` — Same `--base-token` parameter migration
+  - `onboarding` — Rename `+create-event` → `+create`
+
 ## [1.0.1] - 2026-04-07
 
 ### Enhanced

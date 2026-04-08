@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-smart-scheduler
-version: 1.0.1
+version: 1.0.2
 description: "智能排会助手：根据参会人列表查询各人忙闲状态，自动找出共同空闲时段，支持会议室资源查询与预约， 生成最优会议时间+会议室建议并一键创建日程。当用户需要约多人会议、找共同空闲时间、预约会议室、 或问「帮我约一个 XX 的会」时使用。"
 metadata:
   requires:
@@ -55,7 +55,7 @@ lark-cli auth login --domain calendar,contact
      (时段+会议室) (次优)  (备选)
                     │
                     ▼
-         用户选择 → calendar +create-event
+         用户选择 → calendar +create
                     （创建日程 + 邀请参会人 + 预约会议室）
 ```
 
@@ -108,21 +108,37 @@ date -v+3d "+%Y-%m-%dT18:00:00%z"  # 结束
 
 参考 [`lark-calendar/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md)。
 
+**方式 A（推荐）：使用 `+freebusy` Shortcut**
+
 ```bash
-# 查询多人忙闲（freebusy）
+# 查询多人忙闲（推荐方式，v1.0.5+）
+lark-cli calendar +freebusy --start "<start_time>" --end "<end_time>" --user-ids "<user_id_1>,<user_id_2>,<user_id_3>"
+```
+
+**方式 B：使用 `+suggestion` 让 API 直接推荐空闲时段**
+
+当用户只给了时间区间（如"明天"、"下周"）而非精确时间点时，可直接使用 `+suggestion` 获取多个推荐方案：
+
+```bash
+# 获取 AI 推荐的空闲时段（v1.0.5+）
+lark-cli calendar +suggestion --start "<start_time>" --end "<end_time>" --attendee-ids "<user_id_1>,<user_id_2>" --duration-minutes 60
+```
+
+> **选择策略**：
+> - 用户指定了精确时间点（"明天下午3点"） → 使用 `+freebusy` 检查冲突
+> - 用户给了时间范围（"明天"、"这周"） → 使用 `+suggestion` 获取推荐，省去手动计算
+> - `+suggestion` 不可用时 → 退化为 `+freebusy` + AI 手动计算
+
+**方式 C（兜底）：使用原生 API**
+
+```bash
+# 原生 freebusy API
 lark-cli calendar freebusy list --data '{
   "time_min": "<start_time>",
   "time_max": "<end_time>",
   "user_ids": ["<user_id_1>", "<user_id_2>", "<user_id_3>"]
 }' --format json
 ```
-
-返回结果包含每人在指定时间范围内的忙碌时段。
-
-> **备选方案**：如果 freebusy API 不可用，退化为逐个查询每人的 `+agenda`：
-> ```bash
-> lark-cli calendar +agenda --user "<user_id>" --start "<start>" --end "<end>"
-> ```
 
 ### Step 5: 会议室查询与预约（可选 — 用户需要会议室时执行）
 
@@ -258,7 +274,7 @@ lark-cli calendar freebusy list --data '{
 
 ```bash
 # 创建日程并邀请参会人
-lark-cli calendar +create-event \
+lark-cli calendar +create \
   --summary "<会议主题>" \
   --start "<选定开始时间>" \
   --end "<选定结束时间>" \
@@ -269,7 +285,7 @@ lark-cli calendar +create-event \
 
 ```bash
 # 创建日程 + 邀请参会人 + 预约会议室
-lark-cli calendar +create-event \
+lark-cli calendar +create \
   --summary "<会议主题>" \
   --start "<选定开始时间>" \
   --end "<选定结束时间>" \
@@ -277,7 +293,7 @@ lark-cli calendar +create-event \
   --meeting-room "<room_id>"
 ```
 
-> **注意**：如果 `+create-event` 不支持 `--meeting-room` 参数，使用原生 API：
+> **注意**：如果 `+create` 不支持 `--meeting-room` 参数，使用原生 API：
 > ```bash
 > lark-cli calendar events create --data '{
 >   "summary": "<会议主题>",
@@ -326,12 +342,12 @@ lark-cli calendar +create-event \
 | 搜索用户 | `contact +search` | `contact:user.base:readonly` | ✅ 必选 |
 | 查询忙闲 | `calendar freebusy list` | `calendar:calendar.freebusy:read` | ✅ 必选 |
 | 查看日程 | `calendar +agenda` | `calendar:calendar.event:read` | 备选 |
-| 创建日程 | `calendar +create-event` | `calendar:calendar.event:write` | ✅ 必选 |
+| 创建日程 | `calendar +create` | `calendar:calendar.event:write` | ✅ 必选 |
 | 查询会议室 | `calendar meeting_rooms list` | `calendar:meeting_room:readonly` | 可选（会议室预约时） |
 | 会议室忙闲 | `calendar freebusy list` (room_ids) | `calendar:calendar.freebusy:read` | 可选（会议室预约时） |
 
 ## 参考
 
 - [lark-shared](https://github.com/larksuite/cli/blob/main/skills/lark-shared/SKILL.md) — 认证、权限（必读）
-- [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — `+agenda`、`+create-event`、freebusy、meeting_rooms 详细用法
+- [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — `+agenda`、`+create`、freebusy、meeting_rooms 详细用法
 - [lark-contact](https://github.com/larksuite/cli/blob/main/skills/lark-contact/SKILL.md) — `+search` 详细用法
