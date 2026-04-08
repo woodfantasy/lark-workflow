@@ -166,6 +166,16 @@ Each skill lists required scopes in its SKILL.md. Here's a quick reference:
 
 > **Tip:** Use `lark-cli auth login --recommend` to authorize the most commonly used scopes in one step.
 
+> **Least-privilege alternative:** If you only use a subset of skills, authorize only the domains you need — each row above shows the minimum scopes for that skill.
+
+## Security & Privacy
+
+- **No secrets stored** — lark-workflow is instruction-only (SKILL.md files). It never reads, stores, or transmits credentials. Authentication is handled entirely by `lark-cli auth`, which stores tokens in the system keychain.
+- **No code execution** — Installation adds only Markdown skill files. No scripts, binaries, or background processes are installed.
+- **User confirmation required** — All write operations (create events, send messages, create tasks, etc.) require explicit user confirmation before execution.
+- **Scope transparency** — Each skill declares its required OAuth scopes in a permission table. Use per-skill `--domain` auth to grant only the minimum permissions needed.
+- **Graceful degradation** — Optional domains that fail or are unauthorized are skipped with a notice, never blocking the main workflow.
+
 ## Contributing
 
 We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
