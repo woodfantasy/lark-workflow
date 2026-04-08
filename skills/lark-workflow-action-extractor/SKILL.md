@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-action-extractor
-version: 1.0.0
+version: 1.1.0
 description: "会议任务闭环：从会议纪要中提取行动项，自动创建飞书任务并通知责任人， 形成「会议→纪要→行动项→任务→通知」的完整闭环。当用户需要把会议纪要变成任务、 提取 action items、跟进会议决策、或问「把今天的会议纪要整理成任务」时使用。"
 metadata:
   requires:
@@ -121,9 +121,12 @@ lark-cli docs +fetch --doc "<note_doc_token>" --format markdown
 
 ### Step 3B: 获取妙记 AI 产物（补充数据源）
 
-参考 [`lark-minutes/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-minutes/SKILL.md)。
+参考 [`lark-minutes/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-minutes/SKILL.md) 和 [`lark-vc/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-vc/SKILL.md)。
 
 ```bash
+# 首先获取会议的妙记 Token (需要 v1.0.6+ 支持)
+lark-cli vc +recording --meeting-id "<meeting_id>" --format json
+
 # 获取妙记的 AI 产物（总结、待办、章节）
 lark-cli minutes +get --minute-token "<minute_token>" --format json
 ```
