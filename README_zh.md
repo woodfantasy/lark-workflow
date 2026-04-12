@@ -176,6 +176,19 @@ AI Agent 会自动读取对应的 SKILL.md，理解工作流，执行正确的 l
 - **权限透明** — 每个 Skill 在权限表中声明所需的 OAuth scope，支持按需最小授权。
 - **优雅降级** — 可选域未授权或执行失败时，仅在输出中标注提示，不阻塞主流程。
 
+## 常见问题
+
+### 为什么没有 `attendance-report` 或 `slides-generator` 工作流？
+
+我们在升级到 lark-cli v1.0.9 时评估了这两个候选 workflow，决定**暂不构建**：
+
+| 候选 | 上游现状 | 结论 |
+|------|---------|------|
+| `attendance-report` | `lark-attendance` 仅 1 个 API（`user_tasks.query`）— 只能查自己的打卡记录，无法查团队数据，无统计 shortcut | ❌ API 太薄，撑不起有意义的工作流 |
+| `slides-generator` | `lark-slides` SKILL.md 仍为占位文本（非正式版），仅 `+create` 一个 shortcut | ❌ 上游 skill 尚未成熟；`slides +create` 已集成到 `doc-template-engine` |
+
+当上游 API 能力成熟后我们将重新评估。欢迎社区贡献，如果你的组织有更丰富的考勤/演示文稿 API 访问权限。
+
 ## 贡献
 
 欢迎社区贡献！请阅读 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解贡献规范。

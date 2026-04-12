@@ -177,6 +177,19 @@ Each skill lists required scopes in its SKILL.md. Here's a quick reference:
 - **Scope transparency** — Each skill declares its required OAuth scopes in a permission table. Use per-skill `--domain` auth to grant only the minimum permissions needed.
 - **Graceful degradation** — Optional domains that fail or are unauthorized are skipped with a notice, never blocking the main workflow.
 
+## FAQ
+
+### Why no `attendance-report` or `slides-generator` workflow?
+
+We evaluated these two candidates when upgrading to lark-cli v1.0.9 and decided **not** to build them:
+
+| Candidate | Upstream Status | Decision |
+|-----------|----------------|----------|
+| `attendance-report` | `lark-attendance` has only 1 API (`user_tasks.query`) — can only query your own attendance records, cannot query team data, no statistics shortcuts | ❌ API too thin to support a meaningful workflow |
+| `slides-generator` | `lark-slides` SKILL.md is still placeholder text (not production-ready); only `+create` shortcut available | ❌ Upstream skill immature; `slides +create` already integrated into `doc-template-engine` |
+
+We will revisit these when the upstream APIs mature. Contributions welcome if you have access to richer attendance/slides APIs.
+
 ## Contributing
 
 We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
