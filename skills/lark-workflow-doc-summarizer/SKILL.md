@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-doc-summarizer
-version: 1.0.0
+version: 1.1.0
 description: "文档智能摘要：读取飞书云文档或知识库文档内容，生成结构化摘要（要点、关键决策、待确认事项）。 当用户需要总结文档、提取文档要点、快速了解一篇长文档的核心内容、或问「帮我总结这个文档」时使用。"
 metadata:
   requires:
@@ -150,6 +150,14 @@ lark-cli docs +fetch --doc "<doc_token>" --format markdown
 lark-cli drive files search --data '{"search_key":"<关键词>","count":10}' --format json
 # 然后对搜索结果中的文档逐个 fetch + 摘要
 ```
+
+**高级搜索语法（v1.0.7+）：**
+
+提升批量摘要的搜索精度：
+- **布尔搜索**：`"A AND B"` — 同时包含 A 和 B
+- **标题搜索**：`"intitle:设计方案"` — 仅搜索标题含关键词的文档
+
+> **提示**：高级搜索语法可减少不相关结果，提升批量摘要效率。
 
 批量模式输出：
 ```markdown

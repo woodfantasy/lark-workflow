@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-knowledge-qa
-version: 1.0.0
+version: 1.1.0
 description: "知识库问答：在飞书知识库中搜索相关文档，读取内容后进行 RAG 式问答，返回精准回答并附上来源引用链接。 当用户需要查阅公司文档、询问政策/流程/规范、或问「知识库里关于 XX 怎么说的」时使用。"
 metadata:
   requires:
@@ -87,6 +87,15 @@ lark-cli wiki spaces nodes search --data '{"space_id":"<space_id>","query":"<搜
 # 全局搜索文档
 lark-cli drive files search --data '{"search_key":"<搜索词>","count":10,"doc_types":["docx","doc","wiki"]}' --format json
 ```
+
+**高级搜索语法（v1.0.7+）：**
+
+提升搜索精度，支持以下语法：
+- **布尔搜索**：`"A AND B"` — 同时包含 A 和 B
+- **标题搜索**：`"intitle:报销流程"` — 仅搜索标题含关键词的文档
+- **组合搜索**：`"intitle:入职 AND 流程"` — 标题含"入职"且正文含"流程"
+
+> **提示**：高级搜索语法可显著提升检索准确率，建议优先使用。详见 [lark-doc SKILL.md](https://github.com/larksuite/cli/blob/main/skills/lark-doc/SKILL.md) 中的搜索语法说明。
 
 ### Step 3: 筛选与排序
 

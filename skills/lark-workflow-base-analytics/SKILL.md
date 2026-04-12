@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-base-analytics
-version: 1.0.2
+version: 1.1.0
 description: "多维表格智能分析：读取飞书多维表格的结构和数据，进行趋势分析、异常检测和数据洞察， 生成结构化分析报告。当用户需要分析多维表格数据、查看数据趋势、 或问「帮我分析一下这个表」时使用。"
 metadata:
   requires:
@@ -40,6 +40,7 @@ lark-cli auth login --domain base,doc
                        ▼
               base +data-query（聚合分析）
               base +record-list（取样本数据）
+              base +record-search（关键词搜索）
                        │
                        ▼
               AI 分析引擎
@@ -48,7 +49,7 @@ lark-cli auth login --domain base,doc
            趋势分析  异常检测  分布统计
                        │
                        ▼
-              结构化分析报告（可选：docs +create）
+              结构化分析报告（可选：docs +create / +dashboard-arrange）
 ```
 
 ### Step 1: 解析数据源
@@ -115,6 +116,26 @@ lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
 ```
 
 > **⚠️ 数据量控制**：Base 单次最多返回 500 条记录。如果数据量大，使用 `--page-token` 分页获取，但分析场景通常用聚合查询（`+data-query`）更高效。
+
+**关键词搜索异常记录（v1.0.8+）：**
+
+```bash
+# 按关键词搜索记录（适合快速定位异常数据）
+lark-cli base +record-search --base-token "<base_token>" --table-id "<table_id>" \
+  --query "<关键词>" --format json
+```
+
+> **提示**：`+record-search` 适合快速定位包含特定文本的记录（如错误状态、异常备注），比 `+record-list` + 手动过滤更高效。
+
+**使用记录字段过滤（v1.0.8+）：**
+
+```bash
+# 通过字段过滤精确获取特定条件的记录
+lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
+  --filter '<过滤条件>' --page-size 100 --format json
+```
+
+> **提示**：字段过滤可在服务端完成数据筛选，大幅减少返回数据量，适合大表分析场景。
 
 ### Step 4: AI 分析引擎
 
@@ -191,6 +212,18 @@ lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
 lark-cli docs +create --title "数据分析报告：{表名} (<date>)" --markdown "<报告内容>"
 ```
 
+### Step 7: 生成仪表盘（可选，v1.0.8+）
+
+当用户需要在 Base 内直接展示分析结果时，可使用 `+dashboard-arrange` 自动排列仪表盘：
+
+```bash
+# 在 Base 仪表盘中添加 Markdown 文本块并自动排列
+lark-cli base +dashboard-arrange --base-token "<base_token>" \
+  --dashboard-id "<dashboard_id>" --format json
+```
+
+> **提示**：v1.0.8 新增 `text` block type 支持 Markdown 内容，可以将分析摘要直接嵌入仪表盘。
+
 ## 容错机制
 
 | 异常场景 | 处理方式 |
@@ -209,7 +242,9 @@ lark-cli docs +create --title "数据分析报告：{表名} (<date>)" --markdow
 | 表结构 | `base +table-list` / `+field-list` | `bitable:bitable:readonly` | ✅ 必选 |
 | 数据聚合 | `base +data-query` | `bitable:bitable:readonly` | ✅ 必选 |
 | 记录列表 | `base +record-list` | `bitable:bitable:readonly` | 可选（逐行分析时） |
+| 关键词搜索 | `base +record-search` | `bitable:bitable:readonly` | 可选（定位异常时） |
 | 生成报告 | `docs +create` | `docx:document:write` | 可选（写回时） |
+| 仪表盘排列 | `base +dashboard-arrange` | `bitable:bitable` | 可选（仪表盘时） |
 
 ## 参考
 

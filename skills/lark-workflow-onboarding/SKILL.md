@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-onboarding
-version: 1.0.0
+version: 1.1.0
 description: "新人入职自动化：根据新员工信息，自动执行拉入群聊、创建入职任务清单、发送知识库必读文档、 安排入职培训日程等操作，一个 Skill 编排 5 个业务域。 当用户需要为新同事准备入职流程、或问「新同事 XX 入职了，帮我准备一下」时使用。"
 metadata:
   requires:
@@ -191,19 +191,33 @@ lark-cli im +messages-send \
 
 > **降级处理**：如果 wiki 域未授权或未找到入职文档，跳过此步，在报告中标注。
 
+**创建入职 Wiki 页面（v1.0.7+，可选）：**
+
+当用户希望为新人创建专属知识库页面时：
+
+```bash
+# 在知识库中创建新人专属页面（v1.0.7+ shortcut）
+lark-cli wiki +node-create --space-id "<space_id>" \
+  --parent-node-token "<parent_token>" \
+  --title "{新人姓名} 入职指南"
+```
+
+> **提示**：`wiki +node-create` 替代了之前的原生 API 调用，更为简洁。
+
 ### Step 6: 安排入职培训日程
 
 参考 [`lark-calendar/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md)。
 
 ```bash
-# 安排 1v1 入职引导会议
+# 安排 1v1 入职引导会议（默认带视频会议链接，v1.0.8+）
 lark-cli calendar +create \
   --summary "入职引导 - {新人姓名} & {Leader姓名}" \
   --start "<入职日>T10:00:00+08:00" \
   --end "<入职日>T11:00:00+08:00" \
-  --attendees "<新人user_id>,<leader_user_id>"
+  --attendees "<新人use_id>,<leader_user_id>"
 ```
 
+> **注意**：v1.0.8+ `+create` 默认附带视频会议链接，新人即使不在办公室也可参与。
 > **注意**：Leader 的 user_id 需要用户提供或通过 contact 搜索确认。
 
 ### Step 7: 输出执行报告
@@ -254,6 +268,7 @@ lark-cli calendar +create \
 | 发送消息 | `im +messages-send` | `im:message` | ✅ 必选 |
 | 创建任务 | `task +create` | `task:task:write` | ✅ 必选 |
 | 搜索知识库 | `wiki spaces nodes search` | `wiki:wiki:readonly` | 可选 |
+| 创建 Wiki 页面 | `wiki +node-create` | `wiki:wiki` | 可选（创建新人专属页） |
 | 创建日程 | `calendar +create` | `calendar:calendar.event:write` | 可选 |
 
 ## 参考

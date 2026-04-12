@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.0] - 2026-04-12
+
+### Changed
+- **lark-cli v1.0.7~v1.0.9 compatibility** — Major upgrade adapting all workflows to 3 upstream releases:
+  - `smart-scheduler` — Use new `calendar +room-find` shortcut (v1.0.8) replacing manual 3-step room booking; note `+create` now defaults to video meeting
+  - `base-analytics` — Use `base +record-search` for keyword search (v1.0.8), record field filters, and optional `+dashboard-arrange` for Markdown dashboards
+  - `doc-template-engine` — Use `base +record-search` (v1.0.8), `slides +create` for PPT generation (v1.0.9), `sheets +write-image` (v1.0.7)
+  - `meeting-efficiency` — Add `minutes search` (v1.0.9) and VC calendar event relation API for enhanced note extraction
+  - `action-extractor` — Add VC calendar event relation API (v1.0.7) as alternate note token source
+  - `knowledge-qa` — Add advanced docs search syntax: boolean (`AND`), `intitle:` (v1.0.7)
+  - `doc-summarizer` — Same advanced docs search syntax for batch mode
+  - `onboarding` — Use `wiki +node-create` shortcut (v1.0.7), note `+create` video meeting default
+  - `wiki-auditor` — Use `wiki +node-create` shortcut (v1.0.7) for writing audit reports to wiki
+
+### Updated
+- README/README_zh — Atomic skills count 18 → 21 (new: `lark-attendance`, `lark-slides`, `lark-whiteboard-cli`)
+- Architecture diagram updated to reflect full 21-skill landscape
+
 ## [1.0.3] - 2026-04-09
 
 ### Changed

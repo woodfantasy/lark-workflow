@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-action-extractor
-version: 1.1.0
+version: 1.2.0
 description: "会议任务闭环：从会议纪要中提取行动项，自动创建飞书任务并通知责任人， 形成「会议→纪要→行动项→任务→通知」的完整闭环。当用户需要把会议纪要变成任务、 提取 action items、跟进会议决策、或问「把今天的会议纪要整理成任务」时使用。"
 metadata:
   requires:
@@ -106,6 +106,15 @@ lark-cli vc +notes --meeting-ids "<meeting_id>"
 > **无纪要时的处理**：如果会议没有纪要（`no notes available`），提示用户：
 > - "该会议暂无纪要。您可以口述会议结论，我来整理成行动项。"
 > - 或尝试从妙记中获取 AI 产物（Step 3B）
+
+**补充路径（v1.0.7+）：** 当 `vc +notes` 未返回结果时，可通过日历事件关联 API 提取纪要 doc_token：
+
+```bash
+# 通过 VC 的日历关联 API 获取 note doc token（v1.0.7+ 增强）
+lark-cli vc +notes --meeting-ids "<meeting_id>"
+```
+
+> **提示**：v1.0.7 增强了从日历事件关联 API 提取 note doc token 的能力，覆盖了更多会议场景。
 
 ### Step 3A: 读取纪要正文
 

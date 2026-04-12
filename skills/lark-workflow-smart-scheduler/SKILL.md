@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-smart-scheduler
-version: 1.0.2
+version: 1.1.0
 description: "智能排会助手：根据参会人列表查询各人忙闲状态，自动找出共同空闲时段，支持会议室资源查询与预约， 生成最优会议时间+会议室建议并一键创建日程。当用户需要约多人会议、找共同空闲时间、预约会议室、 或问「帮我约一个 XX 的会」时使用。"
 metadata:
   requires:
@@ -142,45 +142,43 @@ lark-cli calendar freebusy list --data '{
 
 ### Step 5: 会议室查询与预约（可选 — 用户需要会议室时执行）
 
-当用户需要预约会议室时，在计算出共同空闲时段后，查询可用会议室。
+当用户需要预约会议室时，使用 `calendar +room-find` 一站式完成查询和筛选。
 
-#### Step 5.1: 获取会议室列表
+**方式 A（推荐）：使用 `+room-find` Shortcut（v1.0.8+）**
 
 ```bash
-# 查询会议室列表
-lark-cli calendar meeting_rooms list --data '{
-  "page_size": 50
-}' --format json
+# 一站式查找可用会议室（推荐方式）
+lark-cli calendar +room-find \
+  --start "<slot_start_time>" \
+  --end "<slot_end_time>" \
+  --capacity <参会人数>
 ```
 
-从返回结果中提取：
-- `room_id`：会议室唯一标识
-- `name`：会议室名称（如 "17F-大会议室A"）
-- `capacity`：容纳人数
-- `building_name` / `floor_name`：所在建筑和楼层
+`+room-find` 自动完成：获取会议室列表 → 查询忙闲 → 按容量/可用性筛选 → 返回可用会议室推荐。
 
-> **筛选规则**（按用户偏好过滤）：
-> - 指定楼层 → 按 `floor_name` 过滤
-> - 指定容量 → `capacity ≥ 参会人数`（默认以参会人数为最低容量要求）
-> - 指定建筑 → 按 `building_name` 过滤
-> - 无偏好 → 取全部可用会议室，按容量升序排列（避免大房间浪费）
+可选参数（按用户偏好过滤）：
+- 指定楼层/建筑 → 在结果中按 `floor_name` / `building_name` 过滤
+- 指定容量 → `--capacity` 参数（默认以参会人数为最低要求）
 
-#### Step 5.2: 查询会议室忙闲
+**方式 B（兜底）：手动 3 步查询**
 
-对候选时段，查询候选会议室的忙闲状态：
+当 `+room-find` 不可用时，退化为手动流程：
 
 ```bash
-# 查询会议室忙闲
+# 1. 查询会议室列表
+lark-cli calendar meeting_rooms list --data '{ "page_size": 50 }' --format json
+
+# 2. 查询候选会议室忙闲
 lark-cli calendar freebusy list --data '{
   "time_min": "<slot_start_time>",
   "time_max": "<slot_end_time>",
   "room_ids": ["<room_id_1>", "<room_id_2>", "<room_id_3>"]
 }' --format json
+
+# 3. 手动匹配空闲会议室
 ```
 
-#### Step 5.3: 匹配最优会议室
-
-为每个候选时段匹配一个空闲会议室，优先规则：
+**匹配优先规则：**
 
 | 因素 | 优先级 | 说明 |
 |------|--------|------|
@@ -270,10 +268,12 @@ lark-cli calendar freebusy list --data '{
 
 > **⚠️ 安全规则：必须等用户确认选择后才创建日程。**
 
+> **注意**：v1.0.8+ `+create` 默认附带视频会议链接。如需纯线下会议（无视频链接），使用原生 API 并不设置 `vc_type`。
+
 **无会议室：**
 
 ```bash
-# 创建日程并邀请参会人
+# 创建日程并邀请参会人（默认带视频会议链接）
 lark-cli calendar +create \
   --summary "<会议主题>" \
   --start "<选定开始时间>" \
@@ -343,8 +343,8 @@ lark-cli calendar +create \
 | 查询忙闲 | `calendar freebusy list` | `calendar:calendar.freebusy:read` | ✅ 必选 |
 | 查看日程 | `calendar +agenda` | `calendar:calendar.event:read` | 备选 |
 | 创建日程 | `calendar +create` | `calendar:calendar.event:write` | ✅ 必选 |
-| 查询会议室 | `calendar meeting_rooms list` | `calendar:meeting_room:readonly` | 可选（会议室预约时） |
-| 会议室忙闲 | `calendar freebusy list` (room_ids) | `calendar:calendar.freebusy:read` | 可选（会议室预约时） |
+| 查询会议室 | `calendar +room-find` 或 `meeting_rooms list` | `calendar:meeting_room:readonly` | 可选（会议室预约时） |
+| 会议室忙闲 | `calendar +room-find` 或 `freebusy list` (room_ids) | `calendar:calendar.freebusy:read` | 可选（会议室预约时） |
 
 ## 参考
 

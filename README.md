@@ -4,7 +4,7 @@
 
 > 15 cross-domain workflow skills for [Lark/Feishu CLI](https://github.com/larksuite/cli) — orchestrate multiple business domains into powerful automated workflows.
 
-While [lark-cli](https://github.com/larksuite/cli) provides 18 atomic skills for individual domains (Calendar, IM, Docs, Tasks, etc.), **lark-workflow** combines them into multi-step, cross-domain workflows that solve real-world productivity scenarios.
+While [lark-cli](https://github.com/larksuite/cli) provides 21 atomic skills for individual domains (Calendar, IM, Docs, Tasks, etc.), **lark-workflow** combines them into multi-step, cross-domain workflows that solve real-world productivity scenarios.
 
 ## Quick Start
 
@@ -125,9 +125,10 @@ These skills are **SKILL.md-based workflow definitions**. Each SKILL.md file tea
            │
            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                  lark-cli Atomic Skills (18)                          │
+│                  lark-cli Atomic Skills (21)                          │
 │  calendar · task · mail · approval · im · vc · docs · drive         │
 │  contact · minutes · base · sheets · wiki · event · whiteboard      │
+│  slides · attendance · openapi-explorer · skill-maker · shared      │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 

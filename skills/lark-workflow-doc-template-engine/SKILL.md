@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-doc-template-engine
-version: 1.0.0
+version: 1.1.0
 description: "文档模板引擎：读取飞书文档模板，从多维表格或电子表格中获取数据源， 自动进行变量替换并批量生成文档。当用户需要基于模板批量生成文档、 或问「用 XX 模板帮我生成一批文档」时使用。"
 metadata:
   requires:
@@ -95,6 +95,10 @@ lark-cli base +field-list --base-token "<base_token>" --table-id "<table_id>" --
 # 获取记录数据
 lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
   --page-size 100 --format json
+
+# 按关键词搜索特定记录（v1.0.8+，适合快速定位模板对应的数据）
+lark-cli base +record-search --base-token "<base_token>" --table-id "<table_id>" \
+  --query "<关键词>" --format json
 ```
 
 **方式 B — 电子表格（Sheets）：**
@@ -157,6 +161,26 @@ lark-cli docs +create --title "<按行替换的标题>" --markdown "<按行替�
 > - 超过 20 条提示用户分批执行
 > - 提供预览模式（仅展示替换结果，不创建文档）
 
+**演示文稿生成（v1.0.9+，可选）：**
+
+当用户需要生成 PPT 而非文档时：
+
+```bash
+# 一步创建演示文稿（v1.0.9+）
+lark-cli slides +create --slides "<Markdown 内容>"
+```
+
+> **提示**：`slides +create` 返回 presentation URL，可直接在报告中链接。
+
+**图片写入电子表格（v1.0.9+，可选）：**
+
+当模板需要在 Sheets 中插入图片时：
+
+```bash
+# 向电子表格写入图片（v1.0.7+）
+lark-cli sheets +write-image --spreadsheet "<token>" --range "<A1>" --image "<image_path>"
+```
+
 **预览模式：**
 ```markdown
 ## 预览：第 1 条文档
@@ -208,13 +232,15 @@ lark-cli docs +create --title "<按行替换的标题>" --markdown "<按行替�
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
 | 读取模板 | `docs +fetch` | `docx:document:readonly` | ✅ 必选 |
-| Base 数据 | `base +field-list` / `+record-list` | `bitable:bitable:readonly` | 可选（Base 数据源时） |
-| Sheets 数据 | `sheets values get` | `sheets:spreadsheet:readonly` | 可选（Sheets 数据源时） |
+| Base 数据 | `base +field-list` / `+record-list` / `+record-search` | `bitable:bitable:readonly` | 可选（Base 数据源时） |
+| Sheets 数据 | `sheets values get` / `+write-image` | `sheets:spreadsheet:readonly` | 可选（Sheets 数据源时） |
 | 生成文档 | `docs +create` | `docx:document:write` | ✅ 必选 |
+| 生成演示文稿 | `slides +create` | `slides:presentation:write` | 可选（PPT 模式时） |
 
 ## 参考
 
 - [lark-shared](https://github.com/larksuite/cli/blob/main/skills/lark-shared/SKILL.md) — 认证、权限（必读）
 - [lark-doc](https://github.com/larksuite/cli/blob/main/skills/lark-doc/SKILL.md) — `+fetch`、`+create` 详细用法
-- [lark-base](https://github.com/larksuite/cli/blob/main/skills/lark-base/SKILL.md) — `+field-list`、`+record-list` 详细用法
-- [lark-sheets](https://github.com/larksuite/cli/blob/main/skills/lark-sheets/SKILL.md) — 电子表格读取详细用法
+- [lark-base](https://github.com/larksuite/cli/blob/main/skills/lark-base/SKILL.md) — `+field-list`、`+record-list`、`+record-search` 详细用法
+- [lark-sheets](https://github.com/larksuite/cli/blob/main/skills/lark-sheets/SKILL.md) — 电子表格读取、`+write-image` 详细用法
+- [lark-slides](https://github.com/larksuite/cli/blob/main/skills/lark-slides/SKILL.md) — `+create` 演示文稿创建

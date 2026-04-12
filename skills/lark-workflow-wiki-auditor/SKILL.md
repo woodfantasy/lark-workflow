@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-wiki-auditor
-version: 1.0.0
+version: 1.1.0
 description: "知识库健康度审计：遍历飞书知识空间的文档节点，分析最后更新时间和结构层级， 识别过时文档、孤立节点和结构问题，生成知识库健康度报告。 当用户需要检查知识库状态、或问「哪些文档过时了」时使用。"
 metadata:
   requires:
@@ -189,6 +189,19 @@ lark-cli drive metas batch_query --data '{
 3. **{建议 3}**：{针对贡献者集中度的建议}
 ```
 
+### Step 6: 自动创建修复建议 Wiki（可选，v1.0.7+）
+
+当用户希望将审计结果写入知识库时：
+
+```bash
+# 在知识库中创建审计报告节点（v1.0.7+ shortcut）
+lark-cli wiki +node-create --space-id "<space_id>" \
+  --parent-node-token "<parent_token>" \
+  --title "知识库审计报告 (<date>)"
+```
+
+> **提示**：审计报告可直接嵌入知识库，方便团队查看和跟踪修复进度。
+
 ## 容错机制
 
 | 异常场景 | 处理方式 |
@@ -206,6 +219,7 @@ lark-cli drive metas batch_query --data '{
 | 列出空间 | `wiki spaces list` | `wiki:wiki:readonly` | ✅ 必选 |
 | 遍历节点 | `wiki spaces nodes list` | `wiki:wiki:readonly` | ✅ 必选 |
 | 文档元数据 | `drive metas batch_query` | `drive:drive:readonly` | 推荐 |
+| 创建审计报告 | `wiki +node-create` | `wiki:wiki` | 可选（写入审计结果时） |
 
 ## 参考
 

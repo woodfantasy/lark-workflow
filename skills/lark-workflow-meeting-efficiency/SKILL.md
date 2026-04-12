@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-meeting-efficiency
-version: 1.0.0
+version: 1.1.0
 description: "会议效率分析：统计一段时间内的会议数据（总时长、参会人数、有无纪要）， 计算会议时间占比和效率指标，生成会议效率报告和优化建议。 当用户需要了解会议效率、分析会议模式、或问「这周开了多少会」时使用。"
 metadata:
   requires:
@@ -103,8 +103,22 @@ VC 记录包含：
 **2.3 检查纪要覆盖率：**
 
 ```bash
+# 方式 A：通过 meeting_id 获取纪要
+lark-cli vc +notes --meeting-ids "<id1>,<id2>,...,<idN>"
+
+# 方式 B（v1.0.7+）：通过日历事件关联 API 提取纪要 token
+# 当会议通过日历事件创建时，可直接从 event relation API 获取 doc_token
 lark-cli vc +notes --meeting-ids "<id1>,<id2>,...,<idN>"
 ```
+
+**2.4 搜索妙记/纪要（v1.0.9+，补充数据源）：**
+
+```bash
+# 搜索妙记（v1.0.9+）— 当会议未通过 vc +search 找到时可作为补充
+lark-cli minutes search --data '{"query":"<关键词>"}' --format json
+```
+
+> **提示**：`minutes search` 可以按关键词搜索妙记，适合补充 vc +search 未覆盖的会议纪要。
 
 统计有纪要的会议数量。
 
@@ -206,9 +220,11 @@ lark-cli vc +notes --meeting-ids "<id1>,<id2>,...,<idN>"
 | 日程数据 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
 | 会议记录 | `vc +search` | `vc:meeting:readonly` | 推荐 |
 | 纪要检查 | `vc +notes` | `vc:meeting:readonly` | 推荐 |
+| 妙记搜索 | `minutes search` | `minutes:minute:readonly` | 可选（补充搜索） |
 
 ## 参考
 
 - [lark-shared](https://github.com/larksuite/cli/blob/main/skills/lark-shared/SKILL.md) — 认证、权限（必读）
 - [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — `+agenda` 详细用法
 - [lark-vc](https://github.com/larksuite/cli/blob/main/skills/lark-vc/SKILL.md) — `+search`、`+notes` 详细用法
+- [lark-minutes](https://github.com/larksuite/cli/blob/main/skills/lark-minutes/SKILL.md) — `search`、妙记产物详细用法
