@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-doc-template-engine
-version: 1.1.0
+version: 1.2.0
 description: "文档模板引擎：读取飞书文档模板，从多维表格或电子表格中获取数据源， 自动进行变量替换并批量生成文档。当用户需要基于模板批量生成文档、 或问「用 XX 模板帮我生成一批文档」时使用。"
 metadata:
   requires:
@@ -180,6 +180,17 @@ lark-cli slides +create --slides "<Markdown 内容>"
 # 向电子表格写入图片（v1.0.7+）
 lark-cli sheets +write-image --spreadsheet "<token>" --range "<A1>" --image "<image_path>"
 ```
+
+**创建文档快捷方式归档（v1.0.10+，可选）：**
+
+当批量生成的文档需要集中归档到同一目录时：
+
+```bash
+# 为生成的文档创建快捷方式到指定目录（v1.0.10+）
+lark-cli drive +create-shortcut --file-token "<doc_token>" --parent-token "<archive_folder_token>"
+```
+
+> **提示**：`+create-shortcut` 可以在不移动原始文档的情况下，在归档目录中创建引用链接，方便集中管理批量生成的文档。
 
 **预览模式：**
 ```markdown

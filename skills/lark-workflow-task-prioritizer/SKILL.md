@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-task-prioritizer
-version: 1.0.0
+version: 1.1.0
 description: "智能任务优先级排序：获取所有未完成任务和今日日程约束，使用紧急/重要矩阵进行 AI 分析， 生成带理由的优先级排序和时间块建议。当用户需要排任务优先级、 问「今天应该先做什么」、或感觉任务太多不知从哪开始时使用。"
 metadata:
   requires:
@@ -32,7 +32,9 @@ lark-cli auth login --domain task,calendar
 ## 工作流
 
 ```
- task +get-my-tasks ──► 所有未完成任务
+ task +get-my-tasks      ──► 分配给我的未完成任务
+ task +get-related-tasks  ──► 我创建/关注的任务（v1.0.11+）
+ task +search             ──► 关键词搜索（可选，v1.0.11+）
                               │
  calendar +agenda   ──► 今日日程（时间约束）
                               │
@@ -68,13 +70,43 @@ date "+%Y-%m-%dT23:59:59%z"
 
 参考 [`lark-task/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-task/SKILL.md)。
 
+> **任务获取策略（v1.0.11+）**：优先使用列表型能力获取全貌，仅在用户提供明确关键词时才用搜索。
+
+**A. 获取分配给我的任务（必选）：**
+
 ```bash
-# 获取所有未完成任务
+# 获取分配给我的未完成任务
 lark-cli task +get-my-tasks --format json
 
 # 如果只看近期任务，加截止日期过滤
 lark-cli task +get-my-tasks --due-end "<end_date>" --format json
 ```
+
+**B. 获取与我相关的任务（推荐，v1.0.11+）：**
+
+```bash
+# 获取与我相关的未完成任务（我创建的、我关注的，覆盖更广）
+lark-cli task +get-related-tasks --include-complete=false --format json
+
+# 仅我创建的任务
+lark-cli task +get-related-tasks --created-by-me --include-complete=false --format json
+```
+
+> **提示**：`+get-related-tasks` 比 `+get-my-tasks` 覆盖更广，能捕获你创建但分配给他人、或你关注但不是负责人的任务。两者取并集可获得最全面的任务视图。
+
+**C. 按关键词搜索任务（可选，用户指定关键词时，v1.0.11+）：**
+
+```bash
+# 搜索包含特定关键词的未完成任务
+lark-cli task +search --query "<关键词>" --completed=false --format json
+
+# 搜索特定时间范围内到期的任务
+lark-cli task +search --due "-1d,+7d" --completed=false --format json
+```
+
+> **注意**：仅在用户明确提供查询关键词时使用 `+search`。如果用户只说"排序我的任务"而没有关键词，优先用 A/B 方式。
+
+**合并策略**：将 A + B 的结果按 `guid` 去重合并，形成完整的任务列表。
 
 从返回结果中提取每个任务的：
 - `summary`：任务标题
@@ -202,6 +234,8 @@ lark-cli calendar +agenda --start "<start>" --end "<end>"
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
 | 获取任务 | `task +get-my-tasks` | `task:task:read` | ✅ 必选 |
+| 相关任务 | `task +get-related-tasks` | `task:task:read` | 推荐（v1.0.11+） |
+| 搜索任务 | `task +search` | `task:task:read` | 可选（v1.0.11+） |
 | 获取日程 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
 
 ## 参考

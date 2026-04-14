@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-action-extractor
-version: 1.2.0
+version: 1.3.0
 description: "会议任务闭环：从会议纪要中提取行动项，自动创建飞书任务并通知责任人， 形成「会议→纪要→行动项→任务→通知」的完整闭环。当用户需要把会议纪要变成任务、 提取 action items、跟进会议决策、或问「把今天的会议纪要整理成任务」时使用。"
 metadata:
   requires:
@@ -202,10 +202,36 @@ lark-cli minutes +get --minute-token "<minute_token>" --format json
 
 参考 [`lark-task/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-task/SKILL.md)。
 
+**6a. 去重检查（推荐，v1.0.11+）：**
+
+在创建任务前，搜索是否已有相似任务，避免重复创建：
+
+```bash
+# 搜索是否已有相似任务
+lark-cli task +search --query "<行动项关键词>" --completed=false --format json
+```
+
+> **提示**：如果搜索到与行动项高度相似的已有任务，在确认界面标注"⚡ 疑似已有任务"，让用户决定是否跳过。
+
+**6b. 创建任务：**
+
 ```bash
 # 逐个创建任务（串行执行，避免并发冲突）
 lark-cli task +create --summary "<行动项描述>" --due "<截止时间 ISO 8601>" --assignee "<user_id>"
 ```
+
+**6c. 加入任务清单（可选，v1.0.10+）：**
+
+如果用户指定了目标任务清单，可将新创建的任务批量加入：
+
+```bash
+# 将任务加入指定清单的特定分组（v1.0.10+ 支持 --section-guid）
+lark-cli task +tasklist-task-add --tasklist-id "<tasklist_guid>" \
+  --task-id "<task_guid_1>,<task_guid_2>" \
+  --section-guid "<section_guid>"
+```
+
+> **提示**：`--section-guid` 可将行动项精确分配到任务清单的特定自定义分组（如"会议行动项"分组），便于后续跟踪。
 
 **创建规则：**
 1. 串行创建，每个任务间隔 0.5~1 秒
@@ -274,7 +300,9 @@ lark-cli im +messages-send --receive-id "<user_id>" --receive-id-type "user_id" 
 | 获取妙记产物 | `minutes +get` | `minutes:minute:readonly` | 可选 |
 | 文档元数据 | `drive metas batch_query` | `drive:drive:readonly` | 可选 |
 | 搜索用户 | `contact +search` | `contact:user.base:readonly` | 推荐 |
+| 搜索任务(去重) | `task +search` | `task:task:read` | 推荐（v1.0.11+） |
 | 创建任务 | `task +create` | `task:task:write` | ✅ 必选 |
+| 加入清单 | `task +tasklist-task-add` | `task:tasklist:write` | 可选（v1.0.10+） |
 | 发送通知 | `im +messages-send` | `im:message:send_as_bot` 或 `im:message` | 推荐 |
 
 ## 参考

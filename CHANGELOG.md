@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.2.0] - 2026-04-15
+
+### Changed
+- **lark-cli v1.0.10~v1.0.11 compatibility** — Upgrade adapting 8 workflows to 2 upstream releases:
+  - `task-prioritizer` — Integrate `+get-related-tasks` for broader task coverage and `+search` for keyword-based filtering (v1.0.11)
+  - `workload-balancer` — Use `+search --assignee` to query team members' tasks, breaking the single-user limitation (v1.0.11)
+  - `weekly-report` — Add `+get-related-tasks` to capture created/followed tasks for more comprehensive reports (v1.0.11)
+  - `action-extractor` — Add `+search` for pre-creation dedup check and `--section-guid` for tasklist organization (v1.0.10/v1.0.11)
+  - `onboarding` — Add `wiki +move` for organizing docs, wiki member operations for granting new hire access (v1.0.10)
+  - `wiki-auditor` — Add `wiki +move` for fixing misplaced docs found during audit (v1.0.10)
+  - `base-analytics` — Add warning for v1.0.11 null JSON object validation in base shortcuts
+  - `doc-template-engine` — Add `drive +create-shortcut` for archiving batch-generated docs (v1.0.10)
+
+### Updated
+- README/README_zh — Atomic skills count 21 → 22 (new: `lark-approval`)
+
 ## [1.1.0] - 2026-04-12
 
 ### Changed

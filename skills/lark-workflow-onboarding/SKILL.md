@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-onboarding
-version: 1.1.0
+version: 1.2.0
 description: "新人入职自动化：根据新员工信息，自动执行拉入群聊、创建入职任务清单、发送知识库必读文档、 安排入职培训日程等操作，一个 Skill 编排 5 个业务域。 当用户需要为新同事准备入职流程、或问「新同事 XX 入职了，帮我准备一下」时使用。"
 metadata:
   requires:
@@ -204,6 +204,32 @@ lark-cli wiki +node-create --space-id "<space_id>" \
 
 > **提示**：`wiki +node-create` 替代了之前的原生 API 调用，更为简洁。
 
+**将文档移动到入职目录（v1.0.10+，可选）：**
+
+```bash
+# 将已有文档移动到新人入职目录下（v1.0.10+ shortcut）
+lark-cli wiki +move --space-id "<space_id>" \
+  --node-token "<doc_node_token>" \
+  --target-parent-token "<onboarding_folder_token>"
+```
+
+> **提示**：`wiki +move` 支持异步任务轮询，适合移动大型文档或目录。
+
+**添加新人为 Wiki 空间成员（v1.0.10+，可选）：**
+
+当知识库设有成员权限时，可直接将新人添加为空间成员：
+
+```bash
+# 查看 wiki members API 参数结构
+lark-cli schema wiki.spaces.members.create
+
+# 添加新人为 wiki 空间成员
+lark-cli wiki spaces members create --params '{"space_id":"<space_id>"}' \
+  --data '{"member_type":"userid","member_id":"<user_id>","member_role":"member"}' --format json
+```
+
+> **提示**：v1.0.10 的 lark-wiki skill 新增了 wiki 成员操作文档，确保新人入职后能直接访问团队知识库。
+
 ### Step 6: 安排入职培训日程
 
 参考 [`lark-calendar/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md)。
@@ -269,6 +295,8 @@ lark-cli calendar +create \
 | 创建任务 | `task +create` | `task:task:write` | ✅ 必选 |
 | 搜索知识库 | `wiki spaces nodes search` | `wiki:wiki:readonly` | 可选 |
 | 创建 Wiki 页面 | `wiki +node-create` | `wiki:wiki` | 可选（创建新人专属页） |
+| 移动 Wiki 节点 | `wiki +move` | `wiki:wiki` | 可选（v1.0.10+） |
+| 添加 Wiki 成员 | `wiki spaces members create` | `wiki:wiki:member:create` | 可选（v1.0.10+） |
 | 创建日程 | `calendar +create` | `calendar:calendar.event:write` | 可选 |
 
 ## 参考

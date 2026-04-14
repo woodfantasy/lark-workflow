@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-weekly-report
-version: 1.0.0
+version: 1.1.0
 description: "周报自动生成：聚合一周的日程、已完成任务、会议纪要、文档活动，自动生成结构化周报。 当用户需要写周报、生成工作总结、回顾本周工作、或问「帮我写周报」时使用。"
 metadata:
   requires:
@@ -35,7 +35,8 @@ lark-cli auth login --domain calendar,task,drive,vc,doc
 
 ```
 {周一~今天} ─┬─► calendar +agenda         ──► 本周会议列表
-             ├─► task +get-my-tasks        ──► 本周已完成 & 进行中任务
+             ├─► task +get-my-tasks        ──► 分配给我的任务
+             ├─► task +get-related-tasks   ──► 我创建/关注的任务（v1.0.11+）
              ├─► drive（搜索文档活动）      ──► 本周编辑/创建的文档（可选）
              └─► vc +search → vc +notes    ──► 本周会议纪要（可选）
                          │
@@ -86,15 +87,27 @@ lark-cli calendar +agenda --start "<monday>T00:00:00+08:00" --end "<today>T23:59
 
 参考 [`lark-task/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-task/SKILL.md)。
 
+**A. 获取分配给我的任务：**
+
 ```bash
-# 获取所有我的任务（包含已完成和未完成）
+# 获取分配给我的任务（包含已完成和未完成）
 lark-cli task +get-my-tasks --page-all --format json
 ```
 
-从任务中提取：
+**B. 获取与我相关的任务（推荐，v1.0.11+）：**
+
+```bash
+# 获取我创建的、我关注的任务（覆盖面更广）
+lark-cli task +get-related-tasks --page-all --format json
+```
+
+> **提示**：`+get-related-tasks` 能捕获你创建但分配给他人的任务（如你委派的工作），以及你关注但不是负责人的任务。将 A + B 的结果按 `guid` 去重合并，可以生成更完整的周报。
+
+从合并后的任务列表中提取：
 - **已完成任务**：本周内从"未完成"变为"已完成"的任务（根据完成时间判断）
 - **进行中任务**：仍未完成但本周有更新的任务
 - **逾期任务**：截止日期在本周内但未完成的任务
+- **我委派的任务**：我创建但分配给他人的任务（来自 `+get-related-tasks --created-by-me`）
 
 > **注意**：`--page-all` 可能返回大量数据。如果任务量过大（>50 条），建议提示用户当前返回的是全量数据，AI 将仅摘取本周相关任务。
 
@@ -191,7 +204,8 @@ lark-cli docs +update --doc "<url_or_token>" --mode append --markdown "<内容>"
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
 | 日程 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
-| 任务 | `task +get-my-tasks` | `task:task:read` | ✅ 必选 |
+| 我的任务 | `task +get-my-tasks` | `task:task:read` | ✅ 必选 |
+| 相关任务 | `task +get-related-tasks` | `task:task:read` | 推荐（v1.0.11+） |
 | 文档活动 | `drive files search` | `drive:drive:readonly` | 可选 |
 | 会议记录 | `vc +search` / `vc +notes` | `vc:meeting:readonly` | 可选 |
 | 生成文档 | `docs +create` / `docs +update` | `docx:document:write` | 可选（写回时） |

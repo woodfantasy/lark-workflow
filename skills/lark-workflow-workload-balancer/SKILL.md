@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-workload-balancer
-version: 1.0.0
+version: 1.1.0
 description: "团队负载均衡器：获取团队成员的任务量、日程密度和审批量，综合评估每个人的工作负载， 生成团队负载热力图和任务分配建议。 当用户需要了解团队工作量分布、或问「谁比较空可以接新任务」时使用。"
 metadata:
   requires:
@@ -73,12 +73,26 @@ lark-cli contact users find_by_department --params '{"department_id":"<dept_id>"
 
 参考 [`lark-task/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-task/SKILL.md)。
 
+**方式 A — 按负责人搜索任务（推荐，v1.0.11+）：**
+
 ```bash
-# 获取每位成员的未完成任务（需逐人查询）
+# 按负责人搜索未完成任务（逐人查询）
+lark-cli task +search --assignee "<user_open_id>" --completed=false --format json
+
+# 搜索本周到期的任务
+lark-cli task +search --assignee "<user_open_id>" --completed=false --due "-0d,+7d" --format json
+```
+
+> **提示**：v1.0.11 新增的 `+search` 支持 `--assignee` 参数按负责人查询，突破了 `+get-my-tasks` 只能查自己任务的限制。需要每位成员的 `open_id`（通过 Step 1 的 `contact +search` 获取）。
+
+**方式 B — 仅查当前用户任务（降级方案）：**
+
+```bash
+# 获取当前登录用户的未完成任务
 lark-cli task +get-my-tasks --format json
 ```
 
-> **⚠️ 权限限制**：`+get-my-tasks` 通常只能查询当前登录用户的任务。如果无法查询他人任务，退化为用户手动输入各成员任务数据，或将结果标注为"数据受限"。
+> **⚠️ 权限限制**：如果 `+search --assignee` 无权限查询他人任务，退化为用户手动输入各成员任务数据，或将结果标注为"数据受限"。
 
 从任务数据中提取：
 - 未完成任务数
@@ -188,7 +202,8 @@ lark-cli calendar +agenda --start "<start>" --end "<end>"
 |------|------|-----------|---------|
 | 搜索用户 | `contact +search` | `contact:user.base:readonly` | ✅ 必选 |
 | 部门成员 | `contact users find_by_department` | `contact:user.employee:readonly` | 可选 |
-| 我的任务 | `task +get-my-tasks` | `task:task:read` | ✅ 必选 |
+| 搜索任务 | `task +search` | `task:task:read` | 推荐（v1.0.11+） |
+| 我的任务 | `task +get-my-tasks` | `task:task:read` | 备选 |
 | 忙闲查询 | `calendar freebusy list` | `calendar:calendar.freebusy:read` | 推荐 |
 | 日程查询 | `calendar +agenda` | `calendar:calendar.event:read` | 备选 |
 

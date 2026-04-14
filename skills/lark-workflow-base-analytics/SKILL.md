@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-base-analytics
-version: 1.1.0
+version: 1.2.0
 description: "多维表格智能分析：读取飞书多维表格的结构和数据，进行趋势分析、异常检测和数据洞察， 生成结构化分析报告。当用户需要分析多维表格数据、查看数据趋势、 或问「帮我分析一下这个表」时使用。"
 metadata:
   requires:
@@ -116,6 +116,8 @@ lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
 ```
 
 > **⚠️ 数据量控制**：Base 单次最多返回 500 条记录。如果数据量大，使用 `--page-token` 分页获取，但分析场景通常用聚合查询（`+data-query`）更高效。
+>
+> **⚠️ JSON 输入校验（v1.0.11+）**：Base 快捷命令现在会校验 JSON 输入并拒绝 `null` 对象。确保传入的 `--filter`、`--aggregations` 等 JSON 参数不是 `null` 而是有效的 JSON 对象或数组，空置时直接省略该参数。
 
 **关键词搜索异常记录（v1.0.8+）：**
 
