@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-base-analytics
-version: 1.2.0
+version: 1.3.0
 description: "多维表格智能分析：读取飞书多维表格的结构和数据，进行趋势分析、异常检测和数据洞察， 生成结构化分析报告。当用户需要分析多维表格数据、查看数据趋势、 或问「帮我分析一下这个表」时使用。"
 metadata:
   requires:
@@ -211,7 +211,7 @@ lark-cli base +record-list --base-token "<base_token>" --table-id "<table_id>" \
 参考 [`lark-doc/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-doc/SKILL.md)。
 
 ```bash
-lark-cli docs +create --title "数据分析报告：{表名} (<date>)" --markdown "<报告内容>"
+lark-cli docs +create --api-version v2 --title "数据分析报告：{表名} (<date>)" --markdown "<报告内容>"
 ```
 
 ### Step 7: 生成仪表盘（可选，v1.0.8+）
@@ -245,7 +245,7 @@ lark-cli base +dashboard-arrange --base-token "<base_token>" \
 | 数据聚合 | `base +data-query` | `bitable:bitable:readonly` | ✅ 必选 |
 | 记录列表 | `base +record-list` | `bitable:bitable:readonly` | 可选（逐行分析时） |
 | 关键词搜索 | `base +record-search` | `bitable:bitable:readonly` | 可选（定位异常时） |
-| 生成报告 | `docs +create` | `docx:document:write` | 可选（写回时） |
+| 生成报告 | `docs +create --api-version v2` | `docx:document:write` | 可选（写回时） |
 | 仪表盘排列 | `base +dashboard-arrange` | `bitable:bitable` | 可选（仪表盘时） |
 
 ## 参考

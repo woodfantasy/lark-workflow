@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-onboarding
-version: 1.2.0
+version: 1.3.0
 description: "新人入职自动化：根据新员工信息，自动执行拉入群聊、创建入职任务清单、发送知识库必读文档、 安排入职培训日程等操作，一个 Skill 编排 5 个业务域。 当用户需要为新同事准备入职流程、或问「新同事 XX 入职了，帮我准备一下」时使用。"
 metadata:
   requires:
@@ -40,7 +40,7 @@ lark-cli auth login --domain contact,im,task,wiki,calendar
 ## 工作流
 
 ```
-用户提供新人信息 ──► contact +search（确认身份）
+用户提供新人信息 ──► contact +search-user（确认身份）
                          │
                          ▼
                    确认执行计划
@@ -61,7 +61,7 @@ lark-cli auth login --domain contact,im,task,wiki,calendar
 
 ```bash
 # 搜索新人信息
-lark-cli contact +search --query "<新人姓名>" --format json
+lark-cli contact +search-user --query "<新人姓名>" --format json
 ```
 
 从返回结果中获取：
@@ -173,7 +173,7 @@ lark-cli task +create --summary "完成入职培训课程" \
 
 ```bash
 # 列出知识空间
-lark-cli wiki spaces list --format json
+lark-cli wiki +space-list --format json
 
 # 搜索新人必读文档
 lark-cli wiki spaces nodes search --data '{"space_id":"<space_id>","query":"入职 新人 指南","page_size":10}' --format json
@@ -287,7 +287,7 @@ lark-cli calendar +create \
 
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
-| 搜索用户 | `contact +search` | `contact:user.base:readonly` | ✅ 必选 |
+| 搜索用户 | `contact +search-user` | `contact:user.base:readonly` | ✅ 必选 |
 | 搜索群聊 | `im +chats-search` | `im:chat:readonly` | ✅ 必选 |
 | 拉入群聊 | `im chats members create` | `im:chat:member:write` | ✅ 必选 |
 | 创建群聊 | `im +chat-create --as user` | `im:chat:create_by_user` | 可选（方式 B） |

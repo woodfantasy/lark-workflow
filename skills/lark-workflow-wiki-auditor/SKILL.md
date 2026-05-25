@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-wiki-auditor
-version: 1.2.0
+version: 1.3.0
 description: "知识库健康度审计：遍历飞书知识空间的文档节点，分析最后更新时间和结构层级， 识别过时文档、孤立节点和结构问题，生成知识库健康度报告。 当用户需要检查知识库状态、或问「哪些文档过时了」时使用。"
 metadata:
   requires:
@@ -35,7 +35,7 @@ lark-cli auth login --domain wiki,drive
 ## 工作流
 
 ```
-指定知识空间 ──► wiki spaces list（列出可用空间）
+指定知识空间 ──► wiki +space-list（列出可用空间）
                        │
                        ▼
               wiki nodes（遍历节点树）
@@ -59,7 +59,7 @@ lark-cli auth login --domain wiki,drive
 
 ```bash
 # 列出所有可见的知识空间
-lark-cli wiki spaces list --format json
+lark-cli wiki +space-list --format json
 ```
 
 如果有多个空间，列出供用户选择：
@@ -76,10 +76,10 @@ lark-cli wiki spaces list --format json
 
 ```bash
 # 获取空间根节点下的子节点
-lark-cli wiki spaces nodes list --params '{"space_id":"<space_id>","page_size":50}' --format json
+lark-cli wiki +node-list --space-id "<space_id>" --format json
 
 # 获取子节点的子节点（递归）
-lark-cli wiki spaces nodes list --params '{"space_id":"<space_id>","parent_node_token":"<parent_token>","page_size":50}' --format json
+lark-cli wiki +node-list --space-id "<space_id>" --parent-node-token "<parent_token>" --format json
 ```
 
 对每个节点记录：
@@ -230,8 +230,8 @@ lark-cli wiki +move --space-id "<space_id>" \
 
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
-| 列出空间 | `wiki spaces list` | `wiki:wiki:readonly` | ✅ 必选 |
-| 遍历节点 | `wiki spaces nodes list` | `wiki:wiki:readonly` | ✅ 必选 |
+| 列出空间 | `wiki +space-list` | `wiki:wiki:readonly` | ✅ 必选 |
+| 遍历节点 | `wiki +node-list` | `wiki:wiki:readonly` | ✅ 必选 |
 | 文档元数据 | `drive metas batch_query` | `drive:drive:readonly` | 推荐 |
 | 创建审计报告 | `wiki +node-create` | `wiki:wiki` | 可选（写入审计结果时） |
 | 移动错位文档 | `wiki +move` | `wiki:wiki` | 可选（v1.0.10+） |

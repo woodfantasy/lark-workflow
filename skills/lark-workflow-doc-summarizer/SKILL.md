@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-doc-summarizer
-version: 1.1.0
+version: 1.2.0
 description: "文档智能摘要：读取飞书云文档或知识库文档内容，生成结构化摘要（要点、关键决策、待确认事项）。 当用户需要总结文档、提取文档要点、快速了解一篇长文档的核心内容、或问「帮我总结这个文档」时使用。"
 metadata:
   requires:
@@ -74,7 +74,7 @@ https://xxx.feishu.cn/wiki/<wiki_token>
 
 ```bash
 # 查询 wiki 节点信息
-lark-cli wiki spaces get_node --params '{"token":"<wiki_token>"}'
+lark-cli wiki +node-get --token "<wiki_token>" --format json
 ```
 
 从返回结果中提取：
@@ -94,7 +94,7 @@ lark-cli wiki spaces get_node --params '{"token":"<wiki_token>"}'
 
 ```bash
 # 读取文档内容（Markdown 格式）
-lark-cli docs +fetch --doc "<doc_token>" --format markdown
+lark-cli docs +fetch --api-version v2 --doc "<doc_token>" --doc-format markdown
 ```
 
 > **长文档处理**：如果文档内容超过 AI 上下文限制（通常 > 50KB），采取以下策略：
@@ -147,7 +147,7 @@ lark-cli docs +fetch --doc "<doc_token>" --format markdown
 # 串行处理每个文档（每个文档间隔 1 秒）
 
 # 方式 2：搜索并摘要
-lark-cli drive files search --data '{"search_key":"<关键词>","count":10}' --format json
+lark-cli drive +search --query "<关键词>" --doc-types docx --format json
 # 然后对搜索结果中的文档逐个 fetch + 摘要
 ```
 
@@ -182,10 +182,10 @@ lark-cli drive files search --data '{"search_key":"<关键词>","count":10}' --f
 
 ```bash
 # 在文档开头插入摘要
-lark-cli docs +update --doc "<doc_token>" --mode prepend --markdown "## 📄 文档摘要\n\n<摘要内容>\n\n---\n\n"
+lark-cli docs +update --api-version v2 --doc "<doc_token>" --command prepend --markdown "## 📄 文档摘要\n\n<摘要内容>\n\n---\n\n"
 
 # 或创建单独的摘要文档
-lark-cli docs +create --title "摘要：{原文档标题}" --markdown "<摘要内容>"
+lark-cli docs +create --api-version v2 --title "摘要：{原文档标题}" --markdown "<摘要内容>"
 ```
 
 ## 容错机制
@@ -202,10 +202,10 @@ lark-cli docs +create --title "摘要：{原文档标题}" --markdown "<摘要�
 
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
-| 读取文档 | `docs +fetch` | `docx:document:readonly` | ✅ 必选 |
-| 解析 wiki | `wiki spaces get_node` | `wiki:wiki:readonly` | 可选（wiki 链接时） |
-| 搜索文档 | `drive files search` | `drive:drive:readonly` | 可选（批量模式） |
-| 写回文档 | `docs +update` / `docs +create` | `docx:document:write` | 可选（写回时） |
+| 读取文档 | `docs +fetch --api-version v2` | `docx:document:readonly` | ✅ 必选 |
+| 解析 wiki | `wiki +node-get` | `wiki:wiki:readonly` | 可选（wiki 链接时） |
+| 搜索文档 | `drive +search` | `drive:drive:readonly` | 可选（批量模式） |
+| 写回文档 | `docs +update --api-version v2` / `docs +create --api-version v2` | `docx:document:write` | 可选（写回时） |
 
 ## 参考
 

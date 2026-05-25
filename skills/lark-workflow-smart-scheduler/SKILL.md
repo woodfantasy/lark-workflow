@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-smart-scheduler
-version: 1.1.0
+version: 1.2.0
 description: "智能排会助手：根据参会人列表查询各人忙闲状态，自动找出共同空闲时段，支持会议室资源查询与预约， 生成最优会议时间+会议室建议并一键创建日程。当用户需要约多人会议、找共同空闲时间、预约会议室、 或问「帮我约一个 XX 的会」时使用。"
 metadata:
   requires:
@@ -36,7 +36,7 @@ lark-cli auth login --domain calendar,contact
 ```
 用户需求 ──► 解析参会人 & 时间范围 & 会议室偏好
                     │
-                    ├─► contact +search（解析姓名 → user_id）
+                    ├─► contact +search-user（解析姓名 → user_id）
                     │
                     ▼
             calendar freebusy list
@@ -80,7 +80,7 @@ lark-cli auth login --domain calendar,contact
 
 ```bash
 # 按姓名搜索用户
-lark-cli contact +search --query "张三" --format json
+lark-cli contact +search-user --query "张三" --format json
 ```
 
 从返回结果中提取：
@@ -339,7 +339,7 @@ lark-cli calendar +create \
 
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
-| 搜索用户 | `contact +search` | `contact:user.base:readonly` | ✅ 必选 |
+| 搜索用户 | `contact +search-user` | `contact:user.base:readonly` | ✅ 必选 |
 | 查询忙闲 | `calendar freebusy list` | `calendar:calendar.freebusy:read` | ✅ 必选 |
 | 查看日程 | `calendar +agenda` | `calendar:calendar.event:read` | 备选 |
 | 创建日程 | `calendar +create` | `calendar:calendar.event:write` | ✅ 必选 |

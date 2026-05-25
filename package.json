@@ -1,6 +1,6 @@
 {
   "name": "lark-workflow",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "15 cross-domain workflow skills for Lark/Feishu CLI — orchestrate calendar, task, docs, approval, IM and more into powerful automated workflows.",
   "repository": {
     "type": "git",

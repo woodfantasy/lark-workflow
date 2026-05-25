@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-approval-accelerator
-version: 1.0.0
+version: 1.0.1
 description: "审批加速器：查看我的待处理审批和已发起审批的状态，对超时未审批的实例自动发送催办消息。 当用户需要催审批、查看审批进度、或问「我的审批到哪了」时使用。"
 metadata:
   requires:
@@ -204,7 +204,7 @@ date "+%s"
 如需通过姓名搜索用户：
 ```bash
 # 获取用户信息用于发送消息
-lark-cli contact +search --query "<审批人姓名>" --format json
+lark-cli contact +search-user --query "<审批人姓名>" --format json
 ```
 
 **Step 7.2: 发送催办消息**
@@ -252,12 +252,12 @@ lark-cli im +messages-send \
 |------|------|-----------|---------|
 | 查询审批任务 | `approval tasks query` | `approval:task:read` | ✅ 必选 |
 | 审批实例详情 | `approval instances get` | `approval:instance:read` | ✅ 必选（催办时） |
-| 搜索用户 | `contact +search` | `contact:user.base:readonly` | 推荐（催办时） |
+| 搜索用户 | `contact +search-user` | `contact:user.base:readonly` | 推荐（催办时） |
 | 发送催办 | `im +messages-send` | `im:message:send_as_bot` 或 `im:message` | 推荐（催办时） |
 
 ## 参考
 
 - [lark-shared](https://github.com/larksuite/cli/blob/main/skills/lark-shared/SKILL.md) — 认证、权限（必读）
 - [lark-approval](https://github.com/larksuite/cli/blob/main/skills/lark-approval/SKILL.md) — `tasks query`、`instances get` 等原生 API 用法
-- [lark-contact](https://github.com/larksuite/cli/blob/main/skills/lark-contact/SKILL.md) — `+search` 详细用法
+- [lark-contact](https://github.com/larksuite/cli/blob/main/skills/lark-contact/SKILL.md) — `+search-user` 详细用法
 - [lark-im](https://github.com/larksuite/cli/blob/main/skills/lark-im/SKILL.md) — 消息发送详细用法

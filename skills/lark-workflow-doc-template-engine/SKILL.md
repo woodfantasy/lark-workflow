@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-doc-template-engine
-version: 1.2.0
+version: 1.3.0
 description: "文档模板引擎：读取飞书文档模板，从多维表格或电子表格中获取数据源， 自动进行变量替换并批量生成文档。当用户需要基于模板批量生成文档、 或问「用 XX 模板帮我生成一批文档」时使用。"
 metadata:
   requires:
@@ -58,7 +58,7 @@ lark-cli auth login --domain doc,base,drive
 
 ```bash
 # 读取模板文档内容
-lark-cli docs +fetch --doc "<模板doc_token>" --format markdown
+lark-cli docs +fetch --api-version v2 --doc "<模板doc_token>" --doc-format markdown
 ```
 
 从模板内容中识别变量占位符。支持的占位符格式：
@@ -144,7 +144,7 @@ lark-cli sheets spreadsheets values get --params '{"spreadsheetToken":"<token>",
 **单条生成：**
 ```bash
 # 替换变量后创建文档
-lark-cli docs +create --title "<替换后的标题>" --markdown "<替换后的内容>"
+lark-cli docs +create --api-version v2 --title "<替换后的标题>" --markdown "<替换后的内容>"
 ```
 
 **批量生成：**
@@ -153,7 +153,7 @@ lark-cli docs +create --title "<替换后的标题>" --markdown "<替换后的�
 # 对数据源中的每一行：
 #   1. 用该行数据替换模板中的所有变量
 #   2. 创建文档
-lark-cli docs +create --title "<按行替换的标题>" --markdown "<按行替换的内容>"
+lark-cli docs +create --api-version v2 --title "<按行替换的标题>" --markdown "<按行替换的内容>"
 ```
 
 > **批量安全**：
@@ -242,10 +242,10 @@ lark-cli drive +create-shortcut --file-token "<doc_token>" --parent-token "<arch
 
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
-| 读取模板 | `docs +fetch` | `docx:document:readonly` | ✅ 必选 |
+| 读取模板 | `docs +fetch --api-version v2` | `docx:document:readonly` | ✅ 必选 |
 | Base 数据 | `base +field-list` / `+record-list` / `+record-search` | `bitable:bitable:readonly` | 可选（Base 数据源时） |
 | Sheets 数据 | `sheets values get` / `+write-image` | `sheets:spreadsheet:readonly` | 可选（Sheets 数据源时） |
-| 生成文档 | `docs +create` | `docx:document:write` | ✅ 必选 |
+| 生成文档 | `docs +create --api-version v2` | `docx:document:write` | ✅ 必选 |
 | 生成演示文稿 | `slides +create` | `slides:presentation:write` | 可选（PPT 模式时） |
 
 ## 参考

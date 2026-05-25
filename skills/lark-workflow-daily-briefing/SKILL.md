@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-daily-briefing
-version: 1.0.0
+version: 1.0.1
 description: "每日全景简报：聚合日程、任务、邮件、审批、消息五大业务域信息，生成一站式每日简报。 当用户需要了解今天的安排、查看每日概览、获取晨间简报、或问「今天有什么需要关注的」时使用。"
 metadata:
   requires:
@@ -162,7 +162,7 @@ lark-cli im +messages-search --query "@" --start "<yesterday_timestamp>" --end "
 参考 [`lark-doc/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-doc/SKILL.md)。
 
 ```bash
-lark-cli docs +create --title "每日简报 (<date>)" --markdown "<内容>"
+lark-cli docs +create --api-version v2 --title "每日简报 (<date>)" --markdown "<内容>"
 ```
 
 ## 数据处理规则
@@ -190,7 +190,7 @@ lark-cli docs +create --title "每日简报 (<date>)" --markdown "<内容>"
 | 邮件 | `mail +inbox` | `mail:mail:readonly` | 可选 |
 | 审批 | `approval tasks query` | `approval:task:read` | 可选 |
 | 消息 | `im +messages-search` | `im:message:readonly` | 可选 |
-| 文档 | `docs +create` | `docx:document:write` | 可选（生成文档时） |
+| 文档 | `docs +create --api-version v2` | `docx:document:write` | 可选（生成文档时） |
 
 ## 参考
 

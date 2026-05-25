@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-knowledge-qa
-version: 1.1.0
+version: 1.2.0
 description: "知识库问答：在飞书知识库中搜索相关文档，读取内容后进行 RAG 式问答，返回精准回答并附上来源引用链接。 当用户需要查阅公司文档、询问政策/流程/规范、或问「知识库里关于 XX 怎么说的」时使用。"
 metadata:
   requires:
@@ -40,7 +40,7 @@ lark-cli auth login --domain wiki,doc,drive
         │
         ├─► wiki（搜索知识空间节点）──► 匹配文档列表
         │
-        ├─► drive files search（补充搜索）──► 匹配文档列表（可选）
+        ├─► drive +search（补充搜索）──► 匹配文档列表（可选）
         │
         ▼
    合并去重 → 按相关性排序 → 取 Top N
@@ -73,7 +73,7 @@ lark-cli auth login --domain wiki,doc,drive
 
 ```bash
 # 列出可用的知识空间
-lark-cli wiki spaces list --format json
+lark-cli wiki +space-list --format json
 
 # 在知识空间中搜索
 lark-cli wiki spaces nodes search --data '{"space_id":"<space_id>","query":"<搜索词>","page_size":10}' --format json
@@ -85,7 +85,7 @@ lark-cli wiki spaces nodes search --data '{"space_id":"<space_id>","query":"<搜
 
 ```bash
 # 全局搜索文档
-lark-cli drive files search --data '{"search_key":"<搜索词>","count":10,"doc_types":["docx","doc","wiki"]}' --format json
+lark-cli drive +search --query "<搜索词>" --doc-types docx,doc,wiki --format json
 ```
 
 **高级搜索语法（v1.0.7+）：**
@@ -115,10 +115,10 @@ lark-cli drive files search --data '{"search_key":"<搜索词>","count":10,"doc_
 
 ```bash
 # Wiki 链接需先解析真实 token
-lark-cli wiki spaces get_node --params '{"token":"<wiki_token>"}'
+lark-cli wiki +node-get --token "<wiki_token>" --format json
 
 # 读取文档内容
-lark-cli docs +fetch --doc "<doc_token>" --format markdown
+lark-cli docs +fetch --api-version v2 --doc "<doc_token>" --doc-format markdown
 ```
 
 > **长文档处理**：如果单篇文档过长（>20KB），仅读取与问题相关的章节。可通过文档的大纲（# 标题层级）定位相关段落。
@@ -174,7 +174,7 @@ lark-cli docs +fetch --doc "<doc_token>" --format markdown
 | 文档无读取权限 | 列出标题但标注"无权限"，建议用户联系文档管理员 |
 | 搜索结果过多 | 取 Top 5，提示用户缩小范围 |
 | 文档内容过长 | 按章节标题定位相关段落，不读取全文 |
-| wiki 域未授权 | 降级为仅使用 drive files search |
+| wiki 域未授权 | 降级为仅使用 drive +search |
 | 文档可能过时 | 在回答中标注文档最后编辑时间 |
 
 ## 权限表
@@ -182,9 +182,9 @@ lark-cli docs +fetch --doc "<doc_token>" --format markdown
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
 | 知识库搜索 | `wiki spaces nodes search` | `wiki:wiki:readonly` | ✅ 必选 |
-| Wiki 节点解析 | `wiki spaces get_node` | `wiki:wiki:readonly` | ✅ 必选 |
-| 文档搜索 | `drive files search` | `drive:drive:readonly` | 可选（补充搜索） |
-| 读取文档 | `docs +fetch` | `docx:document:readonly` | ✅ 必选 |
+| Wiki 节点解析 | `wiki +node-get` | `wiki:wiki:readonly` | ✅ 必选 |
+| 文档搜索 | `drive +search` | `drive:drive:readonly` | 可选（补充搜索） |
+| 读取文档 | `docs +fetch --api-version v2` | `docx:document:readonly` | ✅ 必选 |
 
 ## 参考
 

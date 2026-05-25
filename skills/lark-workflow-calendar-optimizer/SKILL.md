@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-calendar-optimizer
-version: 1.0.2
+version: 1.0.3
 description: "日程优化助手：分析指定日期的日程安排，检测时间冲突、碎片化和不合理排列， 生成优化建议和重排方案。当用户需要优化日程、解决日程冲突、 或问「帮我优化明天的日程」时使用。"
 metadata:
   requires:
@@ -44,7 +44,7 @@ lark-cli auth login --domain calendar
               诊断报告 + 优化方案
                        │
                        ▼（用户确认）
-              calendar events patch / events delete（可选执行）
+              calendar +update / events delete（可选执行）
 ```
 
 ### Step 1: 获取日程数据
@@ -180,7 +180,7 @@ C. 首尾相连（无缓冲）：事件 B 开始时间 == 事件 A 结束时间
 
 ```bash
 # 修改日程时间
-lark-cli calendar events patch --event "<event_id>" \
+lark-cli calendar +update --event "<event_id>" \
   --start "<新开始时间>" --end "<新结束时间>"
 
 # 或取消日程（如果用户决定推掉某个会议）
@@ -209,7 +209,7 @@ lark-cli calendar +rsvp --event "<event_id>" --rsvp "decline"
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
 | 获取日程 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
-| 修改日程 | `calendar events patch` | `calendar:calendar.event:write` | 可选（执行优化时） |
+| 修改日程 | `calendar +update` | `calendar:calendar.event:write` | 可选（执行优化时） |
 | 拒绝日程 | `calendar +rsvp` | `calendar:calendar.event:write` | 可选 |
 | 删除日程 | `calendar events delete` | `calendar:calendar.event:write` | 可选 |
 

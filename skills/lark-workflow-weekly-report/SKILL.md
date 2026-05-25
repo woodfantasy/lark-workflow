@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-weekly-report
-version: 1.1.0
+version: 1.2.0
 description: "周报自动生成：聚合一周的日程、已完成任务、会议纪要、文档活动，自动生成结构化周报。 当用户需要写周报、生成工作总结、回顾本周工作、或问「帮我写周报」时使用。"
 metadata:
   requires:
@@ -119,7 +119,7 @@ lark-cli task +get-related-tasks --page-all --format json
 
 ```bash
 # 搜索最近编辑过的文档
-lark-cli drive files search --data '{"search_key":"","count":20,"order_by":"EditedTime","asc":false}' --format json
+lark-cli drive +search --edited-since 7d --doc-types docx --format json
 ```
 
 从结果中过滤出本周编辑/创建的文档（根据 `edit_time` / `create_time` 判断）。
@@ -194,9 +194,9 @@ lark-cli vc +notes --meeting-ids "id1,id2,...,idN"
 参考 [`lark-doc/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-doc/SKILL.md)。
 
 ```bash
-lark-cli docs +create --title "周报 (<start> ~ <end>)" --markdown "<内容>"
+lark-cli docs +create --api-version v2 --title "周报 (<start> ~ <end>)" --markdown "<内容>"
 # 或追加到已有文档
-lark-cli docs +update --doc "<url_or_token>" --mode append --markdown "<内容>"
+lark-cli docs +update --api-version v2 --doc "<url_or_token>" --command append --markdown "<内容>"
 ```
 
 ## 权限表
@@ -206,9 +206,9 @@ lark-cli docs +update --doc "<url_or_token>" --mode append --markdown "<内容>"
 | 日程 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
 | 我的任务 | `task +get-my-tasks` | `task:task:read` | ✅ 必选 |
 | 相关任务 | `task +get-related-tasks` | `task:task:read` | 推荐（v1.0.11+） |
-| 文档活动 | `drive files search` | `drive:drive:readonly` | 可选 |
+| 文档活动 | `drive +search` | `drive:drive:readonly` | 可选 |
 | 会议记录 | `vc +search` / `vc +notes` | `vc:meeting:readonly` | 可选 |
-| 生成文档 | `docs +create` / `docs +update` | `docx:document:write` | 可选（写回时） |
+| 生成文档 | `docs +create --api-version v2` / `docs +update --api-version v2` | `docx:document:write` | 可选（写回时） |
 
 ## 参考
 

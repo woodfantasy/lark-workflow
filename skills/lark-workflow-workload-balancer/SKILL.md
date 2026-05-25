@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-workload-balancer
-version: 1.1.0
+version: 1.2.0
 description: "团队负载均衡器：获取团队成员的任务量、日程密度和审批量，综合评估每个人的工作负载， 生成团队负载热力图和任务分配建议。 当用户需要了解团队工作量分布、或问「谁比较空可以接新任务」时使用。"
 metadata:
   requires:
@@ -34,7 +34,7 @@ lark-cli auth login --domain task,calendar,contact
 ## 工作流
 
 ```
-团队成员列表 ──► contact +search（逐个确认 user_id）
+团队成员列表 ──► contact +search-user（逐个确认 user_id）
                        │
           ┌────────────┼────────────┐
           ▼            ▼            ▼
@@ -57,7 +57,7 @@ lark-cli auth login --domain task,calendar,contact
 用户说"看看张三、李四、王五的工作量"，逐个搜索确认：
 
 ```bash
-lark-cli contact +search --query "<姓名>" --format json
+lark-cli contact +search-user --query "<姓名>" --format json
 ```
 
 **方式 B — 按部门获取：**
@@ -83,7 +83,7 @@ lark-cli task +search --assignee "<user_open_id>" --completed=false --format jso
 lark-cli task +search --assignee "<user_open_id>" --completed=false --due "-0d,+7d" --format json
 ```
 
-> **提示**：v1.0.11 新增的 `+search` 支持 `--assignee` 参数按负责人查询，突破了 `+get-my-tasks` 只能查自己任务的限制。需要每位成员的 `open_id`（通过 Step 1 的 `contact +search` 获取）。
+> **提示**：v1.0.11 新增的 `+search` 支持 `--assignee` 参数按负责人查询，突破了 `+get-my-tasks` 只能查自己任务的限制。需要每位成员的 `open_id`（通过 Step 1 的 `contact +search-user` 获取）。
 
 **方式 B — 仅查当前用户任务（降级方案）：**
 
@@ -200,7 +200,7 @@ lark-cli calendar +agenda --start "<start>" --end "<end>"
 
 | 步骤 | 命令 | 所需 scope | 是否必选 |
 |------|------|-----------|---------|
-| 搜索用户 | `contact +search` | `contact:user.base:readonly` | ✅ 必选 |
+| 搜索用户 | `contact +search-user` | `contact:user.base:readonly` | ✅ 必选 |
 | 部门成员 | `contact users find_by_department` | `contact:user.employee:readonly` | 可选 |
 | 搜索任务 | `task +search` | `task:task:read` | 推荐（v1.0.11+） |
 | 我的任务 | `task +get-my-tasks` | `task:task:read` | 备选 |
@@ -212,4 +212,4 @@ lark-cli calendar +agenda --start "<start>" --end "<end>"
 - [lark-shared](https://github.com/larksuite/cli/blob/main/skills/lark-shared/SKILL.md) — 认证、权限（必读）
 - [lark-task](https://github.com/larksuite/cli/blob/main/skills/lark-task/SKILL.md) — `+get-my-tasks` 详细用法
 - [lark-calendar](https://github.com/larksuite/cli/blob/main/skills/lark-calendar/SKILL.md) — freebusy、`+agenda` 详细用法
-- [lark-contact](https://github.com/larksuite/cli/blob/main/skills/lark-contact/SKILL.md) — `+search` 详细用法
+- [lark-contact](https://github.com/larksuite/cli/blob/main/skills/lark-contact/SKILL.md) — `+search-user` 详细用法

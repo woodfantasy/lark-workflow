@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-action-extractor
-version: 1.3.0
+version: 1.4.0
 description: "会议任务闭环：从会议纪要中提取行动项，自动创建飞书任务并通知责任人， 形成「会议→纪要→行动项→任务→通知」的完整闭环。当用户需要把会议纪要变成任务、 提取 action items、跟进会议决策、或问「把今天的会议纪要整理成任务」时使用。"
 metadata:
   requires:
@@ -125,7 +125,7 @@ lark-cli vc +notes --meeting-ids "<meeting_id>"
 lark-cli drive metas batch_query --data '{"request_docs": [{"doc_type": "docx", "doc_token": "<note_doc_token>"}], "with_url": true}'
 
 # 读取纪要文档内容（Markdown 格式）
-lark-cli docs +fetch --doc "<note_doc_token>" --format markdown
+lark-cli docs +fetch --api-version v2 --doc "<note_doc_token>" --doc-format markdown
 ```
 
 ### Step 3B: 获取妙记 AI 产物（补充数据源）
@@ -167,7 +167,7 @@ lark-cli minutes +get --minute-token "<minute_token>" --format json
 3. **人名解析**：
    - 提取到的人名使用 `contact` 搜索验证
    ```bash
-   lark-cli contact +search --query "<姓名>" --format json
+   lark-cli contact +search-user --query "<姓名>" --format json
    ```
    - 匹配成功：记录 `user_id`，用于后续任务分配
    - 匹配失败：标注"待确认"，不阻塞流程
@@ -296,10 +296,10 @@ lark-cli im +messages-send --receive-id "<user_id>" --receive-id-type "user_id" 
 |------|------|-----------|---------|
 | 搜索会议 | `vc +search` | `vc:meeting:readonly` | ✅ 必选 |
 | 获取纪要 | `vc +notes` | `vc:meeting:readonly` | ✅ 必选 |
-| 读取纪要正文 | `docs +fetch` | `docx:document:readonly` | ✅ 必选 |
+| 读取纪要正文 | `docs +fetch --api-version v2` | `docx:document:readonly` | ✅ 必选 |
 | 获取妙记产物 | `minutes +get` | `minutes:minute:readonly` | 可选 |
 | 文档元数据 | `drive metas batch_query` | `drive:drive:readonly` | 可选 |
-| 搜索用户 | `contact +search` | `contact:user.base:readonly` | 推荐 |
+| 搜索用户 | `contact +search-user` | `contact:user.base:readonly` | 推荐 |
 | 搜索任务(去重) | `task +search` | `task:task:read` | 推荐（v1.0.11+） |
 | 创建任务 | `task +create` | `task:task:write` | ✅ 必选 |
 | 加入清单 | `task +tasklist-task-add` | `task:tasklist:write` | 可选（v1.0.10+） |

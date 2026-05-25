@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.3.0] - 2026-05-25
+
+### Changed
+- **lark-cli v1.0.12~v1.0.39 compatibility** — Adapt all 15 workflows to latest upstream changes:
+
+#### Breaking: docs API v2 migration (9 skills)
+  - All `docs +fetch`, `docs +create`, `docs +update` commands now require `--api-version v2`
+  - Content format flag changed from `--format markdown` to `--doc-format markdown`
+  - Update mode flag changed from `--mode` to `--command` (e.g. `--command append`)
+  - Affected: `daily-briefing`, `weekly-report`, `action-extractor`, `doc-summarizer`, `knowledge-qa`, `base-analytics`, `doc-template-engine`
+
+#### Breaking: contact +search → +search-user rename (6 skills)
+  - `contact +search` renamed to `contact +search-user` upstream
+  - Affected: `action-extractor`, `smart-scheduler`, `approval-accelerator`, `onboarding`, `workload-balancer`
+
+#### New shortcuts replacing raw APIs (4 skills)
+  - `drive files search` → `drive +search` with flat flags (`--edited-since`, `--doc-types`, `--mine`)
+  - `wiki spaces get_node` → `wiki +node-get --token`
+  - `wiki spaces list` → `wiki +space-list`
+  - `wiki spaces nodes list` → `wiki +node-list`
+  - `calendar events patch` → `calendar +update`
+  - Affected: `weekly-report`, `doc-summarizer`, `knowledge-qa`, `wiki-auditor`, `calendar-optimizer`, `onboarding`
+
+### Updated
+- README/README_zh — Atomic skills count 22 → 26 (new: `lark-apps`, `lark-markdown`, `lark-vc-agent`, `lark-okr`)
+
 ## [1.2.0] - 2026-04-15
 
 ### Changed
