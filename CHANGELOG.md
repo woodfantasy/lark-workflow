@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.4.0] - 2026-06-16
+
+### Changed
+- **lark-cli v1.0.52~v1.0.54 compatibility** — Adapt 4 workflows to latest upstream changes:
+
+#### New: note domain integration (2 skills)
+  - `action-extractor` — Add `note +detail` / `note +transcript` as alternative path alongside `minutes +get` for meeting transcript retrieval; prefer `note +transcript` for full verbatim text (v1.0.53+)
+  - `meeting-efficiency` — Add `note +detail` / `note +transcript` as alternative to `minutes +search`; migrate `minutes search` raw call to `minutes +search` shortcut (v1.0.53+)
+
+#### Enhanced: drive +search creator filters (2 skills)
+  - `weekly-report` — Document `--created-by-me` flag for precise personal document filtering in weekly summary (v1.0.54+)
+  - `doc-summarizer` — Add `--created-by-me` and `--original-creator-ids` options to batch search mode; clarify `--created-by-me` vs `--mine` semantics (v1.0.54+)
+
+### Updated
+- README/README_zh — Atomic skills count 26 → 27 (new: `lark-note`); add Note domain to `action-extractor` and `meeting-efficiency` domain lists
+
 ## [1.3.0] - 2026-05-25
 
 ### Changed

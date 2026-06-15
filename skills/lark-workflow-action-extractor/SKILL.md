@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-action-extractor
-version: 1.4.0
+version: 1.5.0
 description: "会议任务闭环：从会议纪要中提取行动项，自动创建飞书任务并通知责任人， 形成「会议→纪要→行动项→任务→通知」的完整闭环。当用户需要把会议纪要变成任务、 提取 action items、跟进会议决策、或问「把今天的会议纪要整理成任务」时使用。"
 metadata:
   requires:
@@ -130,7 +130,9 @@ lark-cli docs +fetch --api-version v2 --doc "<note_doc_token>" --doc-format mark
 
 ### Step 3B: 获取妙记 AI 产物（补充数据源）
 
-参考 [`lark-minutes/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-minutes/SKILL.md) 和 [`lark-vc/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-vc/SKILL.md)。
+参考 [`lark-minutes/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-minutes/SKILL.md)、[`lark-vc/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-vc/SKILL.md) 和 [`lark-vc/SKILL.md`](https://github.com/larksuite/cli/blob/main/skills/lark-vc/SKILL.md)。
+
+**路径 A — 通过 minutes +get 获取 AI 产物（原有路径）：**
 
 ```bash
 # 首先获取会议的妙记 Token (需要 v1.0.6+ 支持)
@@ -139,6 +141,23 @@ lark-cli vc +recording --meeting-id "<meeting_id>" --format json
 # 获取妙记的 AI 产物（总结、待办、章节）
 lark-cli minutes +get --minute-token "<minute_token>" --format json
 ```
+
+**路径 B — 通过 note domain 获取逐字稿（v1.0.53+ 推荐）：**
+
+```bash
+# 获取 note 元数据（包含 display_type 和文档 tokens）
+lark-cli note +detail --note-id "<note_id>" --format json
+
+# 直接获取统一逐字稿（Markdown 格式，支持中英日）
+lark-cli note +transcript --note-id "<note_id>" --transcript-format markdown
+```
+
+> **使用建议**：
+> - `note +transcript` 提供完整的逐字稿文本，适合从中提取细粒度行动项
+> - `minutes +get` 提供 AI 生成的待办/总结，适合快速获取结构化结论
+> - 两个路径互为补充，优先使用 `note +transcript`（更完整），再用 `minutes +get` 获取 AI 待办作为补充
+
+> **note_id 来源**：`vc +notes` 返回结果中的 `note_id` 字段（v1.0.53+ 可用）
 
 > **注意**：妙记的待办提取（`todo` 字段）是很好的补充数据源。AI 应将妙记待办与纪要正文中的行动项合并去重。
 
@@ -298,6 +317,7 @@ lark-cli im +messages-send --receive-id "<user_id>" --receive-id-type "user_id" 
 | 获取纪要 | `vc +notes` | `vc:meeting:readonly` | ✅ 必选 |
 | 读取纪要正文 | `docs +fetch --api-version v2` | `docx:document:readonly` | ✅ 必选 |
 | 获取妙记产物 | `minutes +get` | `minutes:minute:readonly` | 可选 |
+| 获取逐字稿（新） | `note +detail` / `note +transcript` | `minutes:minute:readonly` | 可选（v1.0.53+） |
 | 文档元数据 | `drive metas batch_query` | `drive:drive:readonly` | 可选 |
 | 搜索用户 | `contact +search-user` | `contact:user.base:readonly` | 推荐 |
 | 搜索任务(去重) | `task +search` | `task:task:read` | 推荐（v1.0.11+） |

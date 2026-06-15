@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-weekly-report
-version: 1.2.0
+version: 1.3.0
 description: "周报自动生成：聚合一周的日程、已完成任务、会议纪要、文档活动，自动生成结构化周报。 当用户需要写周报、生成工作总结、回顾本周工作、或问「帮我写周报」时使用。"
 metadata:
   requires:
@@ -120,7 +120,14 @@ lark-cli task +get-related-tasks --page-all --format json
 ```bash
 # 搜索最近编辑过的文档
 lark-cli drive +search --edited-since 7d --doc-types docx --format json
+
+# （可选增强）仅搜索由我创建的文档（v1.0.54+）
+lark-cli drive +search --edited-since 7d --doc-types docx --created-by-me --format json
 ```
+
+> **`--created-by-me` vs `--mine`**：
+> - `--created-by-me`：按「原始创建者」过滤，适合找「我写的文档」
+> - `--mine`：按「所有者」过滤，文档可能已转让，字义不同
 
 从结果中过滤出本周编辑/创建的文档（根据 `edit_time` / `create_time` 判断）。
 

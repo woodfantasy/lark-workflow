@@ -76,7 +76,7 @@ AI Agent 会自动读取对应的 SKILL.md，理解工作流，执行正确的 l
 | Skill | 说明 | 涉及业务域 |
 |-------|------|-----------|
 | [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | 智能排会 — 多人忙闲查询 + 会议室预约 + 一键创建日程 | 日历、通讯录 |
-| [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | 会议任务闭环 — 纪要→行动项→任务→通知 | 视频会议、妙记、云文档、通讯录、任务、即时通讯 |
+| [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | 会议任务闭环 — 纪要→行动项→任务→通知 | 视频会议、妙记、小纪、云文档、通讯录、任务、即时通讯 |
 | [`onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | 新人入职自动化 — 编排 5 个域 | 通讯录、即时通讯、任务、知识库、日历 |
 | [`workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | 团队负载均衡 — 负载热力图 + 分配建议 | 任务、日历、通讯录 |
 | [`approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | 审批加速器 — 进度追踪 + 超时催办 | 审批、即时通讯、通讯录 |
@@ -86,7 +86,7 @@ AI Agent 会自动读取对应的 SKILL.md，理解工作流，执行正确的 l
 | Skill | 说明 | 涉及业务域 |
 |-------|------|-----------|
 | [`base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | 多维表格智能分析 — 趋势、异常、分布洞察 | 多维表格 |
-| [`meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | 会议效率分析 — 时间成本、纪要覆盖率、节奏 | 视频会议、日历、妙记 |
+| [`meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | 会议效率分析 — 时间成本、纪要覆盖率、节奏 | 视频会议、日历、妙记、小纪 |
 | [`doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | 文档模板引擎 — 数据驱动批量生成文档 | 云文档、多维表格、电子表格 |
 
 ### 📚 知识管理
@@ -125,11 +125,11 @@ AI Agent 会自动读取对应的 SKILL.md，理解工作流，执行正确的 l
            │
            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                  飞书 CLI 原子 Skills（26 个）                        │
+│                  飞书 CLI 原子 Skills（27 个）                        │
 │  日历 · 任务 · 邮箱 · 审批 · 消息 · 会议 · 文档 · 云空间            │
-│  通讯录 · 妙记 · 多维表格 · 电子表格 · 知识库 · 事件 · 画板         │
-│  演示文稿 · 考勤 · API 浏览器 · Skill 创建器 · 共享 · 画板CLI       │
-│  应用 · Markdown · OKR · 会议Agent                                │
+│  通讯录 · 妙记 · 小纪 · 多维表格 · 电子表格 · 知识库 · 事件 · 画板   │
+│  演示文稿 · 考勤 · API 浏览器 · Skill 创建器 · 共享      │
+│  应用 · Markdown · OKR · 会议Agent                           │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 

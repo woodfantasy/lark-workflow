@@ -76,7 +76,7 @@ The AI Agent reads the corresponding SKILL.md, understands the workflow, and exe
 | Skill | Description | Domains |
 |-------|-------------|---------|
 | [`smart-scheduler`](./skills/lark-workflow-smart-scheduler/SKILL.md) | Multi-attendee free slot finder + room booking + event creation | Calendar, Contact |
-| [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | Meeting → notes → tasks → notifications closed loop | VC, Minutes, Docs, Contact, Task, IM |
+| [`action-extractor`](./skills/lark-workflow-action-extractor/SKILL.md) | Meeting → notes → tasks → notifications closed loop | VC, Minutes, Note, Docs, Contact, Task, IM |
 | [`onboarding`](./skills/lark-workflow-onboarding/SKILL.md) | New hire automation across 5 domains | Contact, IM, Task, Wiki, Calendar |
 | [`workload-balancer`](./skills/lark-workflow-workload-balancer/SKILL.md) | Team workload heatmap + assignment suggestions | Task, Calendar, Contact |
 | [`approval-accelerator`](./skills/lark-workflow-approval-accelerator/SKILL.md) | Approval tracking + timeout nudge messaging | Approval, IM, Contact |
@@ -86,7 +86,7 @@ The AI Agent reads the corresponding SKILL.md, understands the workflow, and exe
 | Skill | Description | Domains |
 |-------|-------------|---------|
 | [`base-analytics`](./skills/lark-workflow-base-analytics/SKILL.md) | Bitable trend analysis, anomaly detection, insights | Base |
-| [`meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | Meeting time cost, note coverage, pattern analysis | VC, Calendar, Minutes |
+| [`meeting-efficiency`](./skills/lark-workflow-meeting-efficiency/SKILL.md) | Meeting time cost, note coverage, pattern analysis | VC, Calendar, Minutes, Note |
 | [`doc-template-engine`](./skills/lark-workflow-doc-template-engine/SKILL.md) | Data-driven batch document generation | Docs, Base, Sheets |
 
 ### 📚 Knowledge Management
@@ -125,11 +125,11 @@ These skills are **SKILL.md-based workflow definitions**. Each SKILL.md file tea
            │
            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                  lark-cli Atomic Skills (26)                          │
+│                  lark-cli Atomic Skills (27)                          │
 │  calendar · task · mail · approval · im · vc · docs · drive         │
-│  contact · minutes · base · sheets · wiki · event · whiteboard      │
+│  contact · minutes · note · base · sheets · wiki · event · whiteboard │
 │  slides · attendance · openapi-explorer · skill-maker · shared      │
-│  whiteboard-cli · apps · markdown · okr · vc-agent                  │
+│  apps · markdown · okr · vc-agent                                   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 

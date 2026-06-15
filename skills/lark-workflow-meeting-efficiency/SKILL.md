@@ -1,6 +1,6 @@
 ---
 name: lark-workflow-meeting-efficiency
-version: 1.1.0
+version: 1.2.0
 description: "会议效率分析：统计一段时间内的会议数据（总时长、参会人数、有无纪要）， 计算会议时间占比和效率指标，生成会议效率报告和优化建议。 当用户需要了解会议效率、分析会议模式、或问「这周开了多少会」时使用。"
 metadata:
   requires:
@@ -111,14 +111,27 @@ lark-cli vc +notes --meeting-ids "<id1>,<id2>,...,<idN>"
 lark-cli vc +notes --meeting-ids "<id1>,<id2>,...,<idN>"
 ```
 
-**2.4 搜索妙记/纪要（v1.0.9+，补充数据源）：**
+**2.4 搜索妙记/纪要（补充数据源）：**
+
+**方式 A — minutes +search（v1.0.9+）：**
 
 ```bash
 # 搜索妙记（v1.0.9+）— 当会议未通过 vc +search 找到时可作为补充
-lark-cli minutes search --data '{"query":"<关键词>"}' --format json
+lark-cli minutes +search --query "<关键词>" --format json
 ```
 
-> **提示**：`minutes search` 可以按关键词搜索妙记，适合补充 vc +search 未覆盖的会议纪要。
+**方式 B — note +transcript 获取逐字稿（v1.0.53+，推荐）：**
+
+```bash
+# 获取 note 元数据，确认 note_id
+lark-cli note +detail --note-id "<note_id>" --format json
+
+# 获取纪要的逐字稿（Markdown）
+lark-cli note +transcript --note-id "<note_id>" --transcript-format markdown
+```
+
+> **使用建议**：`note +transcript` 可直接获取逐字稿文本，比 `minutes +search` 返回的元数据更适合分析会议质量（有无实质内容、发言人分布等）。
+> **note_id 来源**：`vc +notes` 返回结果中的 `note_id` 字段。
 
 统计有纪要的会议数量。
 
@@ -220,7 +233,8 @@ lark-cli minutes search --data '{"query":"<关键词>"}' --format json
 | 日程数据 | `calendar +agenda` | `calendar:calendar.event:read` | ✅ 必选 |
 | 会议记录 | `vc +search` | `vc:meeting:readonly` | 推荐 |
 | 纪要检查 | `vc +notes` | `vc:meeting:readonly` | 推荐 |
-| 妙记搜索 | `minutes search` | `minutes:minute:readonly` | 可选（补充搜索） |
+| 妙记搜索 | `minutes +search` | `minutes:minute:readonly` | 可选（补充搜索） |
+| 逐字稿（新） | `note +detail` / `note +transcript` | `minutes:minute:readonly` | 可选（v1.0.53+） |
 
 ## 参考
 
